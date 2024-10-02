@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KoiDeliv.DataAccess\KoiDeliv.DataAccess.csproj" />
+    <ProjectReference Include="..\KoiDeliv.Service\KoiDeliv.Service.csproj" />
+    <ProjectReference Include="..\KoiDeliv.Utils\KoiDeliv.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

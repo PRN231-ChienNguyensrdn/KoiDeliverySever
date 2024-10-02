@@ -1,4 +1,4 @@
-﻿using Repository.Models;
+﻿using KoiDeliv.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,17 +11,17 @@ namespace Repository
 
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private DBContext context;
+        private KoiDeliveryDBContext _context;
 
-        public UnitOfWork(DBContext _context)
+        public UnitOfWork(KoiDeliveryDBContext context)
         {
-            context = _context;
+            _context = context;
         }
 
-    
+
         public void Save()
         {
-            var validationErrors = context.ChangeTracker.Entries<IValidatableObject>()
+            var validationErrors = _context.ChangeTracker.Entries<IValidatableObject>()
                 .SelectMany(e => e.Entity.Validate(null))
                 .Where(e => e != ValidationResult.Success)
                 .ToArray();
@@ -31,7 +31,7 @@ namespace Repository
                     validationErrors.Select(error => $"Properties {error.MemberNames} Error: {error.ErrorMessage}"));
                 throw new Exception(exceptionMessage);
             }
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         private bool disposed = false;
@@ -42,7 +42,7 @@ namespace Repository
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
                 disposed = true;
             }

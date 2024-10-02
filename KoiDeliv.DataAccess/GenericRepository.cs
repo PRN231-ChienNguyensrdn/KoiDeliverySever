@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Repository.Models;
+﻿using KoiDeliv.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
+
 using System.Linq.Expressions;
 
 namespace Repository
@@ -7,10 +8,10 @@ namespace Repository
 
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        protected DBContext _context;
+        protected KoiDeliveryDBContext _context;
         protected DbSet<TEntity> _dbSet;
 
-        public GenericRepository(DBContext context)
+        public GenericRepository(KoiDeliveryDBContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
