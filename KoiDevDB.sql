@@ -1,0 +1,121 @@
+CREATE DATABASE KoiDeliveryDB;
+GO
+USE KoiDeliveryDB
+GO
+CREATE TABLE [Users] (
+	[UserID] INT IDENTITY,
+	[FullName] NVARCHAR(100) NOT NULL,
+	[Email] NVARCHAR(100) NOT NULL UNIQUE,
+	[PasswordHash] NVARCHAR(255) NOT NULL,
+	[Role] NVARCHAR(50) NOT NULL,
+	[PhoneNumber] NVARCHAR(15),
+	[Address] NVARCHAR(255),
+	[CreatedAt] DATETIME DEFAULT GETDATE(),
+	PRIMARY KEY([UserID])
+);
+GO
+
+CREATE TABLE [PriceList] (
+	[PriceID] INT IDENTITY,
+	[WeightRange] NVARCHAR(50) NOT NULL,
+	[BasePrice] DECIMAL NOT NULL,
+	[AdditionalServicePrice] DECIMAL,
+	[CreatedAt] DATETIME DEFAULT GETDATE(),
+	PRIMARY KEY([PriceID])
+);
+GO
+
+CREATE TABLE [Orders] (
+	[OrderID] INT IDENTITY,
+	[CustomerID] INT NOT NULL,
+	[Origin] NVARCHAR(255) NOT NULL,
+	[Destination] NVARCHAR(255) NOT NULL,
+	[TotalWeight] DECIMAL NOT NULL,
+	[TotalQuantity] INT NOT NULL,
+	[ShippingMethod] NVARCHAR(100),
+	[AdditionalServices] NVARCHAR(255),
+	[Status] NVARCHAR(50) DEFAULT 'Pending',
+	[CreatedAt] DATETIME DEFAULT GETDATE(),
+	PRIMARY KEY([OrderID])
+);
+GO
+
+CREATE TABLE [Shipments] (
+	[ShipmentID] INT IDENTITY,
+	[OrderID] INT NOT NULL,
+	[SalesStaffID] INT,
+	[DeliveringStaffID] INT,
+	[HealthCheckStatus] NVARCHAR(50),
+	[PackingStatus] NVARCHAR(50),
+	[ShippingStatus] NVARCHAR(50) DEFAULT 'In-Progress',
+	[ForeignImportStatus] NVARCHAR(50),
+	[CertificateIssued] NVARCHAR(255),
+	[DeliveryDate] DATETIME,
+	PRIMARY KEY([ShipmentID])
+);
+GO
+
+CREATE TABLE [RatingsFeedbacks] (
+	[FeedbackID] INT IDENTITY,
+	[OrderID] INT NOT NULL,
+	[Rating] INT CHECK([Rating] BETWEEN 1 AND 5),
+	[Feedback] NVARCHAR(1000),
+	[CreatedAt] DATETIME DEFAULT GETDATE(),
+	PRIMARY KEY([FeedbackID])
+);
+GO
+
+CREATE TABLE [CustomerProfiles] (
+	[ProfileID] INT IDENTITY,
+	[CustomerID] INT NOT NULL,
+	[TotalOrders] INT DEFAULT 0,
+	[TotalSpent] DECIMAL DEFAULT 0,
+	[LastOrderDate] DATETIME,
+	PRIMARY KEY([ProfileID])
+);
+GO
+
+CREATE TABLE [Blogs] (
+	[BlogID] INT IDENTITY,
+	[Title] NVARCHAR(255) NOT NULL,
+	[Content] NVARCHAR(max) NOT NULL,
+	[ImagePath] NVARCHAR(255),
+	[CreatedAt] DATETIME DEFAULT GETDATE(),
+	[AuthorID] INT,
+	[PriceListID] INT,
+	PRIMARY KEY([BlogID])
+);
+GO
+
+ALTER TABLE [Orders]
+ADD FOREIGN KEY([CustomerID]) REFERENCES [Users]([UserID])
+ON UPDATE NO ACTION ON DELETE CASCADE;
+GO
+ALTER TABLE [Shipments]
+ADD FOREIGN KEY([OrderID]) REFERENCES [Orders]([OrderID])
+ON UPDATE NO ACTION ON DELETE CASCADE;
+GO
+ALTER TABLE [Shipments]
+ADD FOREIGN KEY([SalesStaffID]) REFERENCES [Users]([UserID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Shipments]
+ADD FOREIGN KEY([DeliveringStaffID]) REFERENCES [Users]([UserID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [RatingsFeedbacks]
+ADD FOREIGN KEY([OrderID]) REFERENCES [Orders]([OrderID])
+ON UPDATE NO ACTION ON DELETE CASCADE;
+GO
+ALTER TABLE [CustomerProfiles]
+ADD FOREIGN KEY([CustomerID]) REFERENCES [Users]([UserID])
+ON UPDATE NO ACTION ON DELETE CASCADE;
+GO
+ALTER TABLE [Blogs]
+ADD FOREIGN KEY([AuthorID]) REFERENCES [Users]([UserID])
+ON UPDATE NO ACTION ON DELETE SET NULL;
+GO
+ALTER TABLE [Blogs]
+ADD FOREIGN KEY([PriceListID]) REFERENCES [PriceList]([PriceID])
+ON UPDATE NO ACTION ON DELETE SET NULL;
+GO
