@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoiDeliv.DataAccess.Repository
 {
-	public class UserRepo : GenericRepository<UserRepo>
+	public class UserRepo : GenericRepository<User>
 	{
         public UserRepo(KoiDeliveryDBContext context) : base(context) 
         {
