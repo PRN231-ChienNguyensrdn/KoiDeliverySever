@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KoiDeliv.DataAccess.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace Repository
     public interface IUnitOfWork : IDisposable
     {
 
-
-        void Save();
+		PriceListRepo PriceListRepo { get; }
+		void Save();
     }
 
 }

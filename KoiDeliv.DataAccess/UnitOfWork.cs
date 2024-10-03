@@ -1,4 +1,5 @@
 ﻿using KoiDeliv.DataAccess.Models;
+using KoiDeliv.DataAccess.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,51 +9,60 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
+	public class UnitOfWork : IUnitOfWork, IDisposable
+	{
+		private readonly KoiDeliveryDBContext _context;  // Use readonly to prevent accidental changes
+		private PriceListRepo _priceListRepo;
 
-    public class UnitOfWork : IUnitOfWork, IDisposable
-    {
-        private KoiDeliveryDBContext _context;
+		// Constructor that ensures context is injected
+		public UnitOfWork(KoiDeliveryDBContext context)
+		{
+			_context = context ?? throw new ArgumentNullException(nameof(context));
+		}
 
-        public UnitOfWork(KoiDeliveryDBContext context)
-        {
-            _context = context;
-        }
+		// Save method with validation logic
+		public void Save()
+		{
+			var validationErrors = _context.ChangeTracker.Entries<IValidatableObject>()
+				.SelectMany(e => e.Entity.Validate(null))
+				.Where(e => e != ValidationResult.Success)
+				.ToArray();
+			if (validationErrors.Any())
+			{
+				var exceptionMessage = string.Join(Environment.NewLine,
+					validationErrors.Select(error => $"Properties {error.MemberNames} Error: {error.ErrorMessage}"));
+				throw new Exception(exceptionMessage);
+			}
+			_context.SaveChanges();
+		}
 
+		// Implement the PriceListRepo property
+		public PriceListRepo PriceListRepo
+		{
+			get
+			{
+				return _priceListRepo ??= new PriceListRepo(_context);  // Lazy initialization of PriceListRepo
+			}
+		}
 
-        public void Save()
-        {
-            var validationErrors = _context.ChangeTracker.Entries<IValidatableObject>()
-                .SelectMany(e => e.Entity.Validate(null))
-                .Where(e => e != ValidationResult.Success)
-                .ToArray();
-            if (validationErrors.Any())
-            {
-                var exceptionMessage = string.Join(Environment.NewLine,
-                    validationErrors.Select(error => $"Properties {error.MemberNames} Error: {error.ErrorMessage}"));
-                throw new Exception(exceptionMessage);
-            }
-            _context.SaveChanges();
-        }
+		// Dispose method to release resources
+		private bool _disposed = false;
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!_disposed)
+			{
+				if (disposing)
+				{
+					_context.Dispose();
+				}
+				_disposed = true;
+			}
+		}
 
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-                disposed = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-    }
-
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+	}
 }

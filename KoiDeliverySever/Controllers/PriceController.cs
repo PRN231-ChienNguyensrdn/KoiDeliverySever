@@ -1,43 +1,116 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using KoiDeliv.Service.DTO.Create;
+using KoiDeliv.Service.DTO.Update;
+using KoiDeliv.Service.Implementations;
+using KoiDeliv.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KoiDeliverySever.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PriceController : ControllerBase
-    {
-        // GET: api/<PriceController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class PriceController : ControllerBase
+	{
+		private readonly IPriceService _priceService;
 
-        // GET api/<PriceController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+		public PriceController(IPriceService priceService)
+		{
+			_priceService = priceService ?? throw new ArgumentNullException(nameof(priceService));
+		}
 
-        // POST api/<PriceController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+		// GET: api/Price/GetAllPrices
+		[HttpGet("GetAllPrices")]
+		public async Task<IActionResult> GetAllPrice()
+		{
+			try
+			{
+				var prices = await _priceService.GetAll();
+				return Ok(prices);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
 
-        // PUT api/<PriceController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+		// GET: api/Price/{id}
+		[HttpGet("{id:int}")]
+		public async Task<IActionResult> GetPriceById(int id)
+		{
+			try
+			{
+				var price = await _priceService.GetById(id);
+				if (price == null)
+					return NotFound(new { message = "Price not found" });
 
-        // DELETE api/<PriceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-    }
+				return Ok(price);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+
+		// POST: api/Price
+		[HttpPost]
+		public async Task<IActionResult> CreatePrice([FromBody] CreatePriceListDTO createPriceDto)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			try
+			{
+				var result = await _priceService.Save(createPriceDto);
+				if (result.Success)
+				{
+					return Ok(new { message = "Price created successfully", data = result.Data });
+				}
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+
+		// PUT: api/Price/{id}
+		[HttpPut("{id:int}")]
+		public async Task<IActionResult> UpdatePrice(int id, [FromBody] UpdatePriceListDTO updatePriceDto)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			try
+			{
+				updatePriceDto.PriceListId = id; // Assign the correct ID from the route
+				var result = await _priceService.Update(updatePriceDto);
+
+				if (result.Success)
+					return Ok(new { message = "Price updated successfully", data = result.Data });
+
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+
+		// DELETE: api/Price/{id}
+		[HttpDelete("{id:int}")]
+		public async Task<IActionResult> DeletePrice(int id)
+		{
+			try
+			{
+				var result = await _priceService.DeleteById(id);
+				if (result.Success)
+					return Ok(new { message = "Price deleted successfully" });
+
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+	}
 }

@@ -7,8 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\KoiDeliv.DataAccess\KoiDeliv.DataAccess.csproj" />
     <ProjectReference Include="..\KoiDeliv.Utils\KoiDeliv.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\Auth\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EcoCore" Version="7.0.0.15991" />
   </ItemGroup>
 
 </Project>
