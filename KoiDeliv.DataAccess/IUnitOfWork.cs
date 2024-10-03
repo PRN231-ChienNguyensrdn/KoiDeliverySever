@@ -10,7 +10,7 @@ namespace Repository
 
     public interface IUnitOfWork : IDisposable
     {
-
+        RatingsFeedbackRepo RatingsFeedbackRepo { get; }
 		PriceListRepo PriceListRepo { get; }
         OrderRepo OrderRepo { get; }
 		void Save();

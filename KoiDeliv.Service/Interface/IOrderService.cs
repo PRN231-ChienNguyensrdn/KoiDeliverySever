@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace KoiDeliv.Service.Interface
 {
-    public interface IOrderService : IGenericRepository<Order>
+    public interface IOrderService  
     {
 		Task<IBusinessResult> GetAll();
 		Task<IBusinessResult> GetById(int id);

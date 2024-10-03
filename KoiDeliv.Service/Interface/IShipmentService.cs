@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoiDeliv.Service.Interface
 {
-    public interface IShipmentService : IGenericRepository<Shipment>
+    public interface IShipmentService  
     {
     }
 }

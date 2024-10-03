@@ -1,43 +1,139 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using KoiDeliv.DataAccess.Repository;
+using KoiDeliv.Service.DTO.Create;
+using KoiDeliv.Service.DTO.Update;
+using KoiDeliv.Service.Implementations;
+using KoiDeliv.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace KoiDeliverySever.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FeedbackController : ControllerBase
-    {
-        // GET: api/<FeedbackController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class FeedbackController : ControllerBase
+	{
+		private readonly IFeedbackService _feedbackService;
+	 
 
-        // GET api/<FeedbackController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+		public FeedbackController(IFeedbackService feedbackService)
+		{
+			_feedbackService = feedbackService ;
+		}
 
-        // POST api/<FeedbackController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+		// GET: api/Feedback/GetAllFeedbacks
+		[HttpGet("GetAllFeedbacks")]
+		public async Task<IActionResult> GetAllFeedbacks()
+		{
+			try
+			{
+				var feedbacks = await _feedbackService.GetAll();
+			 
+				return Ok( feedbacks);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
 
-        // PUT api/<FeedbackController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+		// GET: api/Feedback/{id}
+		[HttpGet("{id:int}")]
+		public async Task<IActionResult> GetFeedbackById(int id)
+		{
+			try
+			{
+				var feedback = await _feedbackService.GetById(id);
+				if (feedback == null)
+					return NotFound(new { message = "Feedback not found" });
 
-        // DELETE api/<FeedbackController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-    }
+				return Ok(feedback);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+
+		// POST: api/Feedback
+		[HttpPost]
+		public async Task<IActionResult> CreateFeedback([FromBody] CreateRatingsFeedbackDTO createFeedbackDto)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			try
+			{
+				var result = await _feedbackService.Save(createFeedbackDto);
+				if (result.Success)
+				{
+					return Ok(new { message = "Feedback created successfully", data = result.Data });
+				}
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+
+			//if(createFeedbackDto == null)
+			//{
+			//	return BadRequest("Feedback data is required");
+			//}
+			//var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+			//if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int feebackerId))
+			//{
+			//	return Unauthorized("User ID is not available. ");
+
+			//}
+			//var result = await _feedbackService.Save(createFeedbackDto, feebackerId);
+			//if (result.Success)
+			//{
+			//	return Ok(result);
+
+
+			//}
+			//return StatusCode(StatusCodes.Status500InternalServerError, result);
+		}
+
+		// PUT: api/Feedback/{id}
+		[HttpPut("{id:int}")]
+		public async Task<IActionResult> UpdateFeedback(int id, [FromBody] UpdateRatingsFeedbackDTO updateFeedbackDto)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			try
+			{
+				updateFeedbackDto.FeedbackId = id; // Assign the correct ID from the route
+				var result = await _feedbackService.Update(updateFeedbackDto);
+
+				if (result.Success)
+					return Ok(new { message = "Feedback updated successfully", data = result.Data });
+
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+
+		// DELETE: api/Feedback/{id}
+		[HttpDelete("{id:int}")]
+		public async Task<IActionResult> DeleteFeedback(int id)
+		{
+			try
+			{
+				var result = await _feedbackService.DeleteById(id);
+				if (result.Success)
+					return Ok(new { message = "Feedback deleted successfully" });
+
+				return BadRequest(new { message = result.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+			}
+		}
+	}
 }

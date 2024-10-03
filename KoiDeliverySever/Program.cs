@@ -17,6 +17,7 @@ builder.Services.AddDbContext<KoiDeliveryDBContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // Configure Swagger/OpenAPI
