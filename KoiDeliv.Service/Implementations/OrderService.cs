@@ -1,5 +1,10 @@
-﻿using KoiDeliv.DataAccess.Models;
+﻿using Business.Base;
+using Common;
+using KoiDeliv.DataAccess.Models;
+using KoiDeliv.Service.DTO.Create;
+using KoiDeliv.Service.DTO.Update;
 using KoiDeliv.Service.Interface;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,41 +14,178 @@ using System.Threading.Tasks;
 
 namespace KoiDeliv.Service.Implementations
 {
-    public class OrderService : IOrderService
-    {
-        public bool Delete(object id)
-        {
-            throw new NotImplementedException();
-        }
+	public class OrderService : IOrderService
+	{
+		private readonly IUnitOfWork _unitOfWork;
 
-        public void Delete(Order entityToDelete)
-        {
-            throw new NotImplementedException();
-        }
+		public OrderService(IUnitOfWork unitOfWork)
+		{
+			_unitOfWork = unitOfWork;
+		}
 
-        public IEnumerable<Order> Get(Expression<Func<Order, bool>>? filter = null, Func<IQueryable<Order>, IOrderedQueryable<Order>>? orderBy = null, string includeProperties = "", int? pageIndex = null, int? pageSize = null)
-        {
-            throw new NotImplementedException();
-        }
+		public bool Delete(object id)
+		{
+			throw new NotImplementedException();
+		}
 
-        public Order GetByID(object id)
-        {
-            throw new NotImplementedException();
-        }
+		public void Delete(Order entityToDelete)
+		{
+			throw new NotImplementedException();
+		}
 
-        public void Insert(Order entity)
-        {
-            throw new NotImplementedException();
-        }
+		public async Task<IBusinessResult> DeleteById(int id)
+		{
+			try
+			{
+				var order = await _unitOfWork.OrderRepo.GetByIdAsync(id);
+				if (order != null)
+				{
+					bool result = await _unitOfWork.OrderRepo.RemoveAsync(order);
+					if (result)
+					{
+						return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+					}
+					return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+				}
 
-        public bool Update(object id, Order entityToUpdate)
-        {
-            throw new NotImplementedException();
-        }
+				return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+			}
+			catch (Exception ex)
+			{
+				return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+			}
+		}
 
-        public void Update(Order entityToUpdate)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public IEnumerable<Order> Get(Expression<Func<Order, bool>>? filter = null, Func<IQueryable<Order>, IOrderedQueryable<Order>>? orderBy = null, string includeProperties = "", int? pageIndex = null, int? pageSize = null)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<IBusinessResult> GetAll()
+		{
+			try
+			{
+				var orders = await _unitOfWork.OrderRepo.GetAllAsync();
+
+				if (orders == null || !orders.Any())
+				{
+					return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+				}
+
+				return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, orders);
+			}
+			catch (Exception ex)
+			{
+				return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+			}
+		}
+
+		public Order GetByID(object id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<IBusinessResult> GetById(int id)
+		{
+			try
+			{
+				var order = await _unitOfWork.OrderRepo.GetByIdAsync(id);
+
+				if (order == null)
+				{
+					return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+				}
+				else
+				{
+					return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, order);
+				}
+			}
+			catch (Exception ex)
+			{
+				return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+			}
+		}
+
+		public void Insert(Order entity)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<IBusinessResult> Save(CreateOrderDTO orderDTO)
+		{
+			try
+			{
+				var order = new Order
+				{
+					CustomerId = orderDTO.CustomerId,
+					Origin = orderDTO.Origin,
+					Destination = orderDTO.Destination,
+					TotalWeight = orderDTO.TotalWeight,
+					TotalQuantity = orderDTO.TotalQuantity,
+					ShippingMethod = orderDTO.ShippingMethod,
+					AdditionalServices = orderDTO.AdditionalServices,
+					Status = orderDTO.Status,
+					CreatedAt = DateTime.UtcNow
+				};
+
+				int result = await _unitOfWork.OrderRepo.CreateAsync(order);
+				if (result > 0)
+				{
+					return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+				}
+				else
+				{
+					return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+				}
+			}
+			catch (Exception ex)
+			{
+				return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+			}
+		}
+
+		public bool Update(object id, Order entityToUpdate)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(Order entityToUpdate)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<IBusinessResult> Update(UpdateOrderDTO orderDTO)
+		{
+			try
+			{
+				var existOrder = await _unitOfWork.OrderRepo.GetByIdAsync(orderDTO.OrderId);
+				if (existOrder == null)
+				{
+					return new BusinessResult(Const.FAIL_UPDATE_CODE, "Order not found");
+				}
+
+				existOrder.Origin = orderDTO.Origin ?? existOrder.Origin;
+				existOrder.Destination = orderDTO.Destination ?? existOrder.Destination;
+				existOrder.TotalWeight = orderDTO.TotalWeight;
+				existOrder.TotalQuantity = orderDTO.TotalQuantity;
+				existOrder.ShippingMethod = orderDTO.ShippingMethod ?? existOrder.ShippingMethod;
+				existOrder.Status = orderDTO.Status ?? existOrder.Status;
+				existOrder.AdditionalServices = orderDTO.AdditionalServices ?? existOrder.AdditionalServices;
+
+				int result = await _unitOfWork.OrderRepo.UpdateAsync(existOrder);
+				if (result > 0)
+				{
+					return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+				}
+				else
+				{
+					return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+				}
+			}
+			catch (Exception ex)
+			{
+				return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+			}
+		}
+	}
 }

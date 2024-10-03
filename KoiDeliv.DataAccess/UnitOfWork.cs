@@ -13,12 +13,30 @@ namespace Repository
 	{
 		private readonly KoiDeliveryDBContext _context;  // Use readonly to prevent accidental changes
 		private PriceListRepo _priceListRepo;
+		private OrderRepo _orderRepo;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
+		public OrderRepo OrderRepo
+		{
+			get
+			{
+				return _orderRepo ??= new OrderRepo(_context);
+			}
+		}
+
+		// Implement the PriceListRepo property
+		public PriceListRepo PriceListRepo
+		{
+			get
+			{
+				return _priceListRepo ??= new PriceListRepo(_context);  // Lazy initialization of PriceListRepo
+			}
+		}
+		
 
 		// Save method with validation logic
 		public void Save()
@@ -36,14 +54,7 @@ namespace Repository
 			_context.SaveChanges();
 		}
 
-		// Implement the PriceListRepo property
-		public PriceListRepo PriceListRepo
-		{
-			get
-			{
-				return _priceListRepo ??= new PriceListRepo(_context);  // Lazy initialization of PriceListRepo
-			}
-		}
+	
 
 		// Dispose method to release resources
 		private bool _disposed = false;
