@@ -17,11 +17,20 @@ namespace Repository
 		private RatingsFeedbackRepo _ratingsFeedbackRepo;
 		private UserRepo _userRepo;
 		private ShipmentRepo _shipmentRepo;
+		private BlogRepo _blogRepo;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
+		}
+
+		public BlogRepo BlogRepo 
+		{
+			get
+			{
+				return _blogRepo ??= new BlogRepo(_context); 
+			}
 		}
 
 		public UserRepo UserRepo

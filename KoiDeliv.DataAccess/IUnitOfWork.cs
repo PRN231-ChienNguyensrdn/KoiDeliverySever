@@ -16,6 +16,7 @@ namespace Repository
 		PriceListRepo PriceListRepo { get; }
         OrderRepo OrderRepo { get; }
         ShipmentRepo ShipmentRepo { get; }
+		BlogRepo BlogRepo { get; }
 		void Save();
     }
 
