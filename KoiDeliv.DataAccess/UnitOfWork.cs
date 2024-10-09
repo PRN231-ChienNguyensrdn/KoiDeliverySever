@@ -14,9 +14,9 @@ namespace Repository
 		private readonly KoiDeliveryDBContext _context;  // Use readonly to prevent accidental changes
 		private PriceListRepo _priceListRepo;
 		private OrderRepo _orderRepo;
-		private ShipmentRepo _shipmentRepo;
 		private RatingsFeedbackRepo _ratingsFeedbackRepo;
 		private UserRepo _userRepo;
+		private ShipmentRepo _shipmentRepo;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)

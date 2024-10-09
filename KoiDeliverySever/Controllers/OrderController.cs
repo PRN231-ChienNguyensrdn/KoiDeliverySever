@@ -17,8 +17,8 @@ namespace KoiDeliverySever.Controllers
 			_orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
 		}
 
-		// GET: api/Order/GetAllOrders
-		[HttpGet("GetAllOrders")]
+		// GET: api/Order/Orders
+		[HttpGet("Orders")]
 		public async Task<IActionResult> GetAllOrders()
 		{
 			try

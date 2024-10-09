@@ -17,7 +17,7 @@ namespace KoiDeliverySever.Controllers
 		}
 
 		// GET: api/User
-		[HttpGet]
+		[HttpGet("Users")]
 		public async Task<IActionResult> GetAllUsers()
 		{
 			try
@@ -84,7 +84,7 @@ namespace KoiDeliverySever.Controllers
 				var result = await _userService.Update(updateUserDto);
 
 				if (result.Success)
-					return Ok(new { message = "User updated successfully", data = result.Data });
+					return Ok(new { message = "User updated successfully", data = result.Data.ToString() });
 
 				return BadRequest(new { message = result.Message });
 			}

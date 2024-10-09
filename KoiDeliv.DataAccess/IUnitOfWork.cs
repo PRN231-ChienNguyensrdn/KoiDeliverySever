@@ -1,4 +1,5 @@
-﻿using KoiDeliv.DataAccess.Repository;
+﻿using KoiDeliv.DataAccess.Models;
+using KoiDeliv.DataAccess.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Repository
         RatingsFeedbackRepo RatingsFeedbackRepo { get; }
 		PriceListRepo PriceListRepo { get; }
         OrderRepo OrderRepo { get; }
+        ShipmentRepo ShipmentRepo { get; }
 		void Save();
     }
 

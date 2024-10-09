@@ -20,8 +20,8 @@ namespace KoiDeliverySever.Controllers
 			_feedbackService = feedbackService ;
 		}
 
-		// GET: api/Feedback/GetAllFeedbacks
-		[HttpGet("GetAllFeedbacks")]
+		// GET: api/Feedback/Feedbacks
+		[HttpGet("Feedbacks")]
 		public async Task<IActionResult> GetAllFeedbacks()
 		{
 			try

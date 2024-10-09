@@ -17,8 +17,8 @@ namespace KoiDeliverySever.Controllers
 			_priceService = priceService ?? throw new ArgumentNullException(nameof(priceService));
 		}
 
-		// GET: api/Price/GetAllPrices
-		[HttpGet("GetAllPrices")]
+		// GET: api/Price/Prices
+		[HttpGet("Prices")]
 		public async Task<IActionResult> GetAllPrice()
 		{
 			try

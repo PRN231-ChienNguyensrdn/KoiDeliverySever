@@ -19,6 +19,7 @@ builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // Configure Swagger/OpenAPI
