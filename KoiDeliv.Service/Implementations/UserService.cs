@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,7 +66,20 @@ namespace KoiDeliv.Service.Implementations
 			}
 		}
 
-		public async Task<IBusinessResult> GetById(int id)
+        public async Task<User> GetByEmail(string email)
+        {
+            try
+            {
+                var user = await _unitOfWork.UserRepo.getUserByEmail(email);
+                return user;
+            }
+            catch (Exception ex)
+            {
+				return null;
+            }
+        }
+
+        public async Task<IBusinessResult> GetById(int id)
 		{
 			try
 			{
@@ -83,7 +97,21 @@ namespace KoiDeliv.Service.Implementations
 			}
 		}
 
-		public async Task<IBusinessResult> Save(CreateUserDTO userDto)
+        public string HashAndTruncatePassword(string password)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var result = md5.ComputeHash(Encoding.ASCII.GetBytes(password));
+                password = BitConverter.ToString(result).Replace("-", "").ToLowerInvariant();
+            }
+
+            // Truncate hash to 16 characters
+            password = password.Substring(0, 16);
+
+            return password;
+        }
+
+        public async Task<IBusinessResult> Save(CreateUserDTO userDto)
 		{
 			try
 			{

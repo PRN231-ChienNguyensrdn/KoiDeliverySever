@@ -3,6 +3,8 @@ using KoiDeliv.DataAccess.Models;
 using KoiDeliv.Service.Implementations;
 using KoiDeliv.Service.Interface;
 using Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,89 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder
+            .AllowAnyOrigin() // or specify allowed origins, e.g., .WithOrigins("https://example.com")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            var user = context.User;
+            var roleClaim = user.FindFirst("Role");
+            if (roleClaim != null && roleClaim.Value == "Admin")
+            {
+                return true;
+            }
+            return false;
+        });
+    });
+    options.AddPolicy("Staff", policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            var user = context.User;
+            var roleClaim = user.FindFirst("Role");
+            if (roleClaim != null && (roleClaim.Value == "Staff"))
+            {
+                return true;
+            }
+            return false;
+        });
+    });
+    options.AddPolicy("Student", policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            var user = context.User;
+            var roleClaim = user.FindFirst("Role");
+            if (roleClaim != null && (roleClaim.Value == "Student"))
+            {
+                return true;
+            }
+            return false;
+        });
+    });
+    options.AddPolicy("Lecture", policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            var user = context.User;
+            var roleClaim = user.FindFirst("Role");
+            if (roleClaim != null && (roleClaim.Value == "Lecture"))
+            {
+                return true;
+            }
+            return false;
+        });
+    });
+});
+
+builder.Services.AddAuthentication(item =>
+{
+    item.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    item.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(item =>
+{
+    item.RequireHttpsMetadata = true;
+    item.SaveToken = true;
+    item.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("c2VydmVwZXJmZWN0bHljaGVlc2VxdWlja2NvYWNoY29sbGVjdHNsb3Bld2lzZWNhbWU=")),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

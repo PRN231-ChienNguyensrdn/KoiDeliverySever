@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\Auth\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EcoCore" Version="7.0.0.15991" />
   </ItemGroup>
 

@@ -17,10 +17,10 @@ namespace KoiDeliv.DataAccess.Repository
             _context = context;
         }
 
-		//public async Task<User> getUserById(int id)
-		//{
-		//	return await DBContext.Users.Include(b => b.Orders).FirstOrDefaultAsync(b => b.UserId == id);
-		//}
+		public async Task<User> getUserByEmail(string id)
+		{
+			return await DBContext.Users.FirstOrDefaultAsync(b => b.Email == id);
+		}
 
 		//public async Task<List<User>> getBlogById(int id)
 		//{

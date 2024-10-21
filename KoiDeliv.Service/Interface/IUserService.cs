@@ -15,9 +15,12 @@ namespace KoiDeliv.Service.Interface
     {
 		Task<IBusinessResult> GetAll();
 		Task<IBusinessResult> GetById(int id);
-		Task<IBusinessResult> Save(CreateUserDTO user);
+        Task<User> GetByEmail(string email);
+        Task<IBusinessResult> Save(CreateUserDTO user);
 		Task<IBusinessResult> Update(UpdateUserDTO user);
 		Task<IBusinessResult> DeleteById(int id);
+        public string HashAndTruncatePassword(string password);
 
-	}
+
+    }
 }
