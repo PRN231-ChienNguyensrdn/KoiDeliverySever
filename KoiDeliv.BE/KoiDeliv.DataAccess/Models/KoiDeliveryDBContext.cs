@@ -101,9 +101,19 @@ namespace KoiDeliv.DataAccess.Models
 
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
+                entity.Property(e => e.DateShip).HasColumnType("datetime");
+
                 entity.Property(e => e.Destination).HasMaxLength(255);
 
+                entity.Property(e => e.FishType).HasMaxLength(250);
+
+                entity.Property(e => e.NameUserGet).HasMaxLength(50);
+
                 entity.Property(e => e.Origin).HasMaxLength(255);
+
+                entity.Property(e => e.PaymentMethod).HasMaxLength(50);
+
+                entity.Property(e => e.PhoneContact).HasMaxLength(15);
 
                 entity.Property(e => e.ShippingMethod).HasMaxLength(100);
 

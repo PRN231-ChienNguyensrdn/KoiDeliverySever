@@ -22,6 +22,11 @@ namespace KoiDeliv.DataAccess.Models
         public string? AdditionalServices { get; set; }
         public string? Status { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? DateShip { get; set; }
+        public string? PaymentMethod { get; set; }
+        public string? PhoneContact { get; set; }
+        public string? FishType { get; set; }
+        public string? NameUserGet { get; set; }
 
         public virtual User Customer { get; set; } = null!;
         public virtual ICollection<RatingsFeedback> RatingsFeedbacks { get; set; }
