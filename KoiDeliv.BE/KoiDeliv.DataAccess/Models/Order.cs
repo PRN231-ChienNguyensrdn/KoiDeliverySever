@@ -9,6 +9,7 @@ namespace KoiDeliv.DataAccess.Models
         {
             RatingsFeedbacks = new HashSet<RatingsFeedback>();
             Shipments = new HashSet<Shipment>();
+            Transactions = new HashSet<Transaction>();
         }
 
         public int OrderId { get; set; }
@@ -25,5 +26,6 @@ namespace KoiDeliv.DataAccess.Models
         public virtual User Customer { get; set; } = null!;
         public virtual ICollection<RatingsFeedback> RatingsFeedbacks { get; set; }
         public virtual ICollection<Shipment> Shipments { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

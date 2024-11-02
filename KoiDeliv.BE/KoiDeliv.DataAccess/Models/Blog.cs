@@ -9,7 +9,7 @@ namespace KoiDeliv.DataAccess.Models
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
         public string? ImagePath { get; set; }
-        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? CreatedAt { get; set; }
         public int? AuthorId { get; set; }
         public int? PriceListId { get; set; }
 

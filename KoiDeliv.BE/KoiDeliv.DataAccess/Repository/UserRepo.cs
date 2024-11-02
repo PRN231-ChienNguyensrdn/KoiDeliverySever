@@ -11,7 +11,7 @@ namespace KoiDeliv.DataAccess.Repository
 {
 	public class UserRepo : GenericRepository<User>
 	{
-        public readonly KoiDeliveryDBContext DBContext;
+       // public readonly KoiDeliveryDBContext DBContext;
         public UserRepo(KoiDeliveryDBContext context) : base(context) 
         {
             _context = context;
@@ -19,7 +19,7 @@ namespace KoiDeliv.DataAccess.Repository
 
 		public async Task<User> getUserByEmail(string id)
 		{
-			return await DBContext.Users.FirstOrDefaultAsync(b => b.Email == id);
+			return await _context.Users.FirstOrDefaultAsync(b => b.Email == id);
 		}
 
 		//public async Task<List<User>> getBlogById(int id)

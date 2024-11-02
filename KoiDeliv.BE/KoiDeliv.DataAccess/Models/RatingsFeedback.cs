@@ -11,6 +11,6 @@ namespace KoiDeliv.DataAccess.Models
         public string? Feedback { get; set; }
         public DateTime? CreatedAt { get; set; }
 
-        public virtual Order Order { get; set; } 
+        public virtual Order Order { get; set; } = null!;
     }
 }
