@@ -1,4 +1,10 @@
 import img1 from "@/assets/img/s-gallery/1.jpg";
+import img2 from "@/assets/img/s-gallery/2.jpg";
+import img3 from "@/assets/img/s-gallery/3.jpg";
+import img4 from "@/assets/img/s-gallery/z5978105931266_8639e33c5579716733b1d8507ece2fe2.jpg";
+import img5 from "@/assets/img/s-gallery/z5978130195502_76611c0d48ee7b0a1243ef85afa50b2d.jpg";
+
+
 const AllServices2 = () => {
   return (
     <div className="section-full p-t120 p-b90 site-bg-gray tw-service-gallery-style1-area tyre-mark-bg">
@@ -25,14 +31,13 @@ const AllServices2 = () => {
                       <div className="service-content-inner">
                         <div className="service-content-top">
                           <h3 className="service-title-large">
-                            <div>Air Freight</div>
+                            <div>Airplane</div>
                           </h3>
                         </div>
                         <div className="service-content-bottom">
                           <span className="service-title-large-number">01</span>
                           <p>
-                            Our aim is to optimize and improve your supply chain
-                            so that we can give you the best service.
+                          Air transport is fast, safe, and reliable, making it ideal for long-distance, especially international routes.
                           </p>
                           <div className="site-button-2">View Detail</div>
                         </div>
@@ -49,21 +54,20 @@ const AllServices2 = () => {
                       <div className="service-content-inner">
                         <div className="service-content-top">
                           <h3 className="service-title-large">
-                            <div>Air Freight</div>
+                            <div>Truck</div>
                           </h3>
                         </div>
                         <div className="service-content-bottom">
                           <span className="service-title-large-number">01</span>
                           <p>
-                            Our aim is to optimize and improve your supply chain
-                            so that we can give you the best service.
+                          Flexible in routing and cost-effective, trucks can transport a variety of goods and provide easy door-to-door delivery domestically.
                           </p>
                           <div className="site-button-2">View Detail</div>
                         </div>
                       </div>
                     </div>
                     <div className="service-media">
-                      <img src={img1} alt="" />
+                      <img src={img2} alt="" />
                     </div>
                   </div>
                 </div>
@@ -73,21 +77,20 @@ const AllServices2 = () => {
                       <div className="service-content-inner">
                         <div className="service-content-top">
                           <h3 className="service-title-large">
-                            <div>Air Freight</div>
+                            <div>Motorcycle</div>
                           </h3>
                         </div>
                         <div className="service-content-bottom">
                           <span className="service-title-large-number">01</span>
                           <p>
-                            Our aim is to optimize and improve your supply chain
-                            so that we can give you the best service.
+                          An optimal choice for fast, flexible, and cost-effective deliveries within cities, easily navigating narrow streets.
                           </p>
                           <div className="site-button-2">View Detail</div>
                         </div>
                       </div>
                     </div>
                     <div className="service-media">
-                      <img src={img1} alt="" />
+                      <img src={img5} alt="" />
                     </div>
                   </div>
                 </div>
@@ -97,21 +100,20 @@ const AllServices2 = () => {
                       <div className="service-content-inner">
                         <div className="service-content-top">
                           <h3 className="service-title-large">
-                            <div>Air Freight</div>
+                            <div>Train</div>
                           </h3>
                         </div>
                         <div className="service-content-bottom">
                           <span className="service-title-large-number">01</span>
                           <p>
-                            Our aim is to optimize and improve your supply chain
-                            so that we can give you the best service.
+                          Suitable for transporting heavy and large quantities of goods over long distances at a lower cost, with less impact from weather conditions.
                           </p>
                           <div className="site-button-2">View Detail</div>
                         </div>
                       </div>
                     </div>
                     <div className="service-media">
-                      <img src={img1} alt="" />
+                      <img src={img4} alt="" />
                     </div>
                   </div>
                 </div>
@@ -121,23 +123,22 @@ const AllServices2 = () => {
                       <div className="service-content-inner">
                         <div className="service-content-top">
                           <h3 className="service-title-large">
-                            <div>Air Freight</div>
+                            <div>Ship</div>
                           </h3>
                         </div>
                         <div className="service-content-bottom">
                           <span className="service-title-large-number">01</span>
                           <p>
-                            Our aim is to optimize and improve your supply chain
-                            so that we can give you the best service.
+                          Ideal for international shipping at low costs, suitable for heavy and oversized cargo, and more environmentally friendly than air transport.
                           </p>
                           <div className="site-button-2">View Detail</div>
                         </div>
                       </div>
                     </div>
                     <div className="service-media">
-                      <img src={img1} alt="" />
+                      <img src={img3} alt="" />
                     </div>
-                  </div>
+                  </div>  
                 </div>{" "}
               </div>
             </div>

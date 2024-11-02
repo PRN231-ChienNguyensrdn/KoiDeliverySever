@@ -98,7 +98,7 @@ const RequestAQuote = () => {
                             </div>
                           </div>
 
-                          <div className="w-full md:w-1/2 lg:w-1/2">
+                          <div className="w-full md:w-1/2 lg:w-full">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Phone
@@ -109,9 +109,9 @@ const RequestAQuote = () => {
                               />
                             </div>
                           </div>
-                          <div className="w-full md:w-1/2 lg:w-1/2">
+                          {/* <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3"></div>
-                          </div>
+                          </div> */}
 
                           <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
@@ -167,7 +167,7 @@ const RequestAQuote = () => {
                               <DateTimePicker />
                             </div>
                           </div>
-                          <div className="w-full md:w-1/2 lg:w-1/2">
+                          {/* <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Ngày và giờ giao hàng
@@ -185,7 +185,7 @@ const RequestAQuote = () => {
                                 placeholder="Hướng dẫn đặc biệt"
                               />
                             </div>
-                          </div>
+                          </div> */}
                           <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
@@ -209,6 +209,34 @@ const RequestAQuote = () => {
                             </div>
                           </div>
                           <div className="w-full md:w-1/2 lg:w-1/2">
+                            <div className="mb-3 px-2">
+                              <Label className="text-black" htmlFor="email">
+                                Phương thức Vận Chuyển
+                              </Label>
+                              <Select>
+                                <SelectTrigger className="w-full bg-white text-black">
+                                  <SelectValue placeholder="Chọn phương thức" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectGroup>
+                                    <SelectItem value="apple">
+                                      Thanh toán online
+                                    </SelectItem>
+                                    <SelectItem value="apple">
+                                      Thanh toán online
+                                    </SelectItem>
+                                    <SelectItem value="apple">
+                                      Thanh toán online
+                                    </SelectItem>
+                                    <SelectItem value="banana">
+                                      Thanh toán khi nhận hàng
+                                    </SelectItem>
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <div className="w-full md:w-1/2 lg:w-full">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Ghi chú
