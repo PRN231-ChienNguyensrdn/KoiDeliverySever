@@ -220,16 +220,16 @@ const RequestAQuote = () => {
                                 <SelectContent>
                                   <SelectGroup>
                                     <SelectItem value="apple">
-                                      Thanh toán online
+                                      Máy bay
                                     </SelectItem>
                                     <SelectItem value="apple">
-                                      Thanh toán online
+                                      Xe lửa
                                     </SelectItem>
                                     <SelectItem value="apple">
-                                      Thanh toán online
+                                      Xe máy
                                     </SelectItem>
                                     <SelectItem value="banana">
-                                      Thanh toán khi nhận hàng
+                                      Xe tải
                                     </SelectItem>
                                   </SelectGroup>
                                 </SelectContent>
