@@ -1,5 +1,6 @@
 ﻿using KoiDeliv.DataAccess.Models;
 using KoiDeliv.DataAccess.Repository;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,6 +19,7 @@ namespace Repository
 		private UserRepo _userRepo;
 		private ShipmentRepo _shipmentRepo;
 		private BlogRepo _blogRepo;
+		private TransactionRepo _transaction;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)
@@ -49,6 +51,13 @@ namespace Repository
 			}
 		}
 
+		public TransactionRepo TransactionRepo
+		{
+			get
+			{
+				return _transaction ??= new TransactionRepo(_context);
+			}
+		}
 
 		public ShipmentRepo ShipmentRepo
 		{
@@ -107,7 +116,12 @@ namespace Repository
 			}
 		}
 
-		public void Dispose()
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
+        }
+
+        public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);

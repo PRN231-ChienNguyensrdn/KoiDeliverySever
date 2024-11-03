@@ -1,5 +1,6 @@
 ﻿using KoiDeliv.DataAccess.Models;
 using KoiDeliv.DataAccess.Repository;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,9 @@ namespace Repository
         OrderRepo OrderRepo { get; }
         ShipmentRepo ShipmentRepo { get; }
 		BlogRepo BlogRepo { get; }
-		void Save();
+        TransactionRepo TransactionRepo { get; }
+        Task<IDbContextTransaction> BeginTransactionAsync();
+        void Save();
     }
 
 }
