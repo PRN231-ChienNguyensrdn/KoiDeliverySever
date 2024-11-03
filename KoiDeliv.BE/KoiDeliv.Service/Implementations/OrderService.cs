@@ -1,4 +1,5 @@
-﻿using Business.Base;
+﻿using AutoMapper;
+using Business.Base;
 using Common;
 using KoiDeliv.DataAccess.Models;
 using KoiDeliv.Service.DTO.Create;
@@ -17,10 +18,12 @@ namespace KoiDeliv.Service.Implementations
 	public class OrderService : IOrderService
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public OrderService(IUnitOfWork unitOfWork)
+		public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 
 		public bool Delete(object id)
@@ -115,20 +118,9 @@ namespace KoiDeliv.Service.Implementations
 		{
 			try
 			{
-				var order = new Order
-				{
-					CustomerId = orderDTO.CustomerId,
-					Origin = orderDTO.Origin,
-					Destination = orderDTO.Destination,
-					TotalWeight = orderDTO.TotalWeight,
-					TotalQuantity = orderDTO.TotalQuantity,
-					ShippingMethod = orderDTO.ShippingMethod,
-					AdditionalServices = orderDTO.AdditionalServices,
-					Status = orderDTO.Status,
-					CreatedAt = DateTime.UtcNow
-				};
+				Order newOrder = _mapper.Map<Order>(orderDTO);
 
-				int result = await _unitOfWork.OrderRepo.CreateAsync(order);
+				int result = await _unitOfWork.OrderRepo.CreateAsync(newOrder);
 				if (result > 0)
 				{
 					return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);

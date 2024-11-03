@@ -10,18 +10,20 @@ namespace KoiDeliv.Service.DTO.Create
 	public class CreateOrderDTO
 	{
 
-		public int CustomerId { get; set; }
-		[Required]
-		public string Origin { get; set; } = null!;
-		[Required]
-		public string Destination { get; set; } = null!;
-		[Required]
-		public decimal TotalWeight { get; set; }
-		[Required]
-		public int TotalQuantity { get; set; }
-		[Required]
-		public string? ShippingMethod { get; set; }
-		public string? Status { get; set; }
-		public string? AdditionalServices { get; set; }
-	}
+        public int OrderId { get; set; }
+        public int CustomerId { get; set; }
+        public string Origin { get; set; } = null!;
+        public string Destination { get; set; } = null!;
+        public decimal TotalWeight { get; set; }
+        public int TotalQuantity { get; set; }
+        public string? ShippingMethod { get; set; }
+        public string? AdditionalServices { get; set; }
+        public string? Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? DateShip { get; set; }
+        public string? PaymentMethod { get; set; }
+        public string? PhoneContact { get; set; }
+        public string? FishType { get; set; }
+        public string? NameUserGet { get; set; }
+    }
 }

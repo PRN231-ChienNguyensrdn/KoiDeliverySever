@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\KoiDeliv.DataAccess\KoiDeliv.DataAccess.csproj" />
-    <ProjectReference Include="..\KoiDeliv.Utils\KoiDeliv.Utils.csproj" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EcoCore" Version="7.0.0.15991" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\KoiDeliv.DataAccess\KoiDeliv.DataAccess.csproj" />
+    <ProjectReference Include="..\KoiDeliv.Utils\KoiDeliv.Utils.csproj" />
   </ItemGroup>
 
 </Project>
