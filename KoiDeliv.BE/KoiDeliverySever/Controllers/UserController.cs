@@ -55,9 +55,10 @@ namespace KoiDeliverySever.Controllers
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
-
 			try
 			{
+				string hasdedPass = _userService.HashAndTruncatePassword(createUserDto.PasswordHash);
+				createUserDto.PasswordHash = hasdedPass;
 				var result = await _userService.Save(createUserDto);
 				if (result.Success)
 				{
