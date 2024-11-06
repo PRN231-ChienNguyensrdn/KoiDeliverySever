@@ -32,8 +32,22 @@ namespace KoiDeliverySever.Controllers
 			}
 		}
 
-		// GET: api/Order/{id}
-		[HttpGet("{id:int}")]
+        [HttpGet("OrdersOfCustomer")]
+        public async Task<IActionResult> GetAllOrdersCustomer(string uid)
+        {
+            try
+            {
+                var orders = await _orderService.GetAllOrderCustomer(uid);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // GET: api/Order/{id}
+        [HttpGet("{id:int}")]
 		public async Task<IActionResult> GetOrderById(int id)
 		{
 			try

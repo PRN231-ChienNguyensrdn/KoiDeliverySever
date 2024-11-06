@@ -31,8 +31,22 @@ namespace KoiDeliverySever.Controllers
 			}
 		}
 
-		// GET: api/User/{id}
-		[HttpGet("{id:int}")]
+        [HttpGet("Staff")]
+        public async Task<IActionResult> GetAllStaff()
+        {
+            try
+            {
+				var users = await _userService.GetStaffUser();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // GET: api/User/{id}
+        [HttpGet("{id:int}")]
 		public async Task<IActionResult> GetUserById(int id)
 		{
 			try
@@ -55,9 +69,10 @@ namespace KoiDeliverySever.Controllers
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
-
 			try
 			{
+				string hasdedPass = _userService.HashAndTruncatePassword(createUserDto.PasswordHash);
+				createUserDto.PasswordHash = hasdedPass;
 				var result = await _userService.Save(createUserDto);
 				if (result.Success)
 				{

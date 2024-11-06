@@ -19,8 +19,7 @@ namespace KoiDeliv.Service.Interface
         Task<IBusinessResult> Save(CreateUserDTO user);
 		Task<IBusinessResult> Update(UpdateUserDTO user);
 		Task<IBusinessResult> DeleteById(int id);
+        Task<IBusinessResult> GetStaffUser();
         public string HashAndTruncatePassword(string password);
-
-
     }
 }
