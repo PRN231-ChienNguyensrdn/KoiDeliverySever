@@ -14,6 +14,8 @@ namespace KoiDeliv.Service.Mapper
         public MappingSetting() { 
             CreateMap<Order,CreateOrderDTO>();
             CreateMap<CreateOrderDTO, Order>();
+            CreateMap<Route, CreateRouteDTO>();
+            CreateMap<CreateRouteDTO, Route>();
         }
     }
 }
