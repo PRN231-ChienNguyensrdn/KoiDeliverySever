@@ -19,6 +19,7 @@ namespace Repository
         ShipmentRepo ShipmentRepo { get; }
 		BlogRepo BlogRepo { get; }
         TransactionRepo TransactionRepo { get; }
+        RouteRepo RouteRepo { get; }
         Task<IDbContextTransaction> BeginTransactionAsync();
         void Save();
     }
