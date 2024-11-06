@@ -96,44 +96,6 @@ const AllServices = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 mb-4">
-                  <div className="service-box-style3">
-                    <div className="service-media">
-                      <img src={pic5} alt="" />
-                    </div>
-                    <div className="service-content">
-                      <h3 className="service-title-large">
-                        <span className="service-title-large-number">05</span>
-                        <button>Warehousing</button>
-                      </h3>
-                      <p>
-                        Our aim is to optimize and improve your supply chain so
-                        that we can give you the best service.
-                      </p>
-                      <button className="site-button-100">View Detail</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 mb-4">
-                  <div className="service-box-style3">
-                    <div className="service-media">
-                      <img src={pic6} alt="" />
-                    </div>
-                    <div className="service-content">
-                      <h3 className="service-title-large">
-                        <span className="service-title-large-number">06</span>
-                        <button>Project Cargo</button>
-                      </h3>
-                      <p>
-                        Our aim is to optimize and improve your supply chain so
-                        that we can give you the best service.
-                      </p>
-                      <button className="site-button-100">View Detail</button>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
