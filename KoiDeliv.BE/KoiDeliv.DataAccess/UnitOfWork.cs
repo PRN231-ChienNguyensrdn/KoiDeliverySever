@@ -20,6 +20,7 @@ namespace Repository
 		private ShipmentRepo _shipmentRepo;
 		private BlogRepo _blogRepo;
 		private TransactionRepo _transaction;
+		private RouteRepo _routeRepo;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)
@@ -82,10 +83,18 @@ namespace Repository
 				return _priceListRepo ??= new PriceListRepo(_context);  // Lazy initialization of PriceListRepo
 			}
 		}
-		
 
-		// Save method with validation logic
-		public void Save()
+        public RouteRepo RouteRepo
+        {
+            get
+            {
+				return _routeRepo ??= new RouteRepo(_context);  // Lazy initialization of PriceListRepo
+            }
+        }
+
+
+        // Save method with validation logic
+        public void Save()
 		{
 			var validationErrors = _context.ChangeTracker.Entries<IValidatableObject>()
 				.SelectMany(e => e.Entity.Validate(null))
