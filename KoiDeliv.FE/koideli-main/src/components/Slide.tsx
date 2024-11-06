@@ -14,21 +14,21 @@ export function Slider() {
       img: img1,
       title1: "To every",
       title2: "direction",
-      desc: "There are many variations of passages of worem Ipsum available, but the majority",
+      desc: "",
     },
     {
       id: 2,
       img: img2,
       title1: "To every",
       title2: "direction",
-      desc: "There are many variations of passages of worem Ipsum available, but the majority",
+      desc: "",
     },
     {
       id: 3,
       img: img3,
       title1: "To every",
       title2: "direction",
-      desc: "There are many variations of passages of worem Ipsum available, but the majority",
+      desc: "",
     },
   ];
   return (

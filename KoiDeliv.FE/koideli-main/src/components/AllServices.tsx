@@ -1,6 +1,6 @@
-import pic1 from "@/assets/img/pic1.png";
-import pic2 from "@/assets/img/pic2.png";
-import pic3 from "@/assets/img/pic3.png";
+import pic1 from "@/assets/img/pic3.png";
+import pic2 from "@/assets/img/pic1.png";
+import pic3 from "@/assets/img/pic2.png";
 import pic4 from "@/assets/img/pic4.png";
 import pic5 from "@/assets/img/pic5.png";
 import pic6 from "@/assets/img/pic6.png";
@@ -15,9 +15,6 @@ const AllServices = () => {
             </div>
             <h2 className="wt-title">Trusted For Our Services</h2>
             <p className="section-head-text">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry the standard dummy text ever since the when an printer
-              took.
             </p>
           </div>
 

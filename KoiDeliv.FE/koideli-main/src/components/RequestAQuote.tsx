@@ -1,5 +1,5 @@
 import bg from "@/assets/img/booking/bg-map.png";
-import pic1 from "@/assets/img/booking/pic1.png";
+import pic1 from "@/assets/img/booking/pic2.png";
 import icon1 from "@/assets/img/booking/icon1.png";
 
 import { Input } from "./ui/input";
@@ -26,11 +26,8 @@ const RequestAQuote = () => {
           <div className="wt-small-separator site-text-primary">
             <div>Request A Quote</div>
           </div>
-          <h2 className="wt-title">Booking For Product Transformation</h2>
+          <h2 className="wt-title">Booking For Koi Fish Transportation</h2>
           <p className="section-head-text">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry the standard dummy text ever since the when an printer
-            took.
           </p>
         </div>
       </div>

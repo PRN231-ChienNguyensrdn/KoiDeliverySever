@@ -1,7 +1,7 @@
-import img1 from "@/assets/img/s-gallery/1.jpg";
-import img2 from "@/assets/img/s-gallery/2.jpg";
-import img3 from "@/assets/img/s-gallery/3.jpg";
-import img4 from "@/assets/img/s-gallery/z5978105931266_8639e33c5579716733b1d8507ece2fe2.jpg";
+import img1 from "@/assets/img/s-gallery/plane.png";
+import img2 from "@/assets/img/s-gallery/truck.png";
+import img3 from "@/assets/img/s-gallery/ship.png";
+import img4 from "@/assets/img/s-gallery/train.png";
 import img5 from "@/assets/img/s-gallery/z5978130195502_76611c0d48ee7b0a1243ef85afa50b2d.jpg";
 
 
@@ -16,9 +16,7 @@ const AllServices2 = () => {
             </div>
             <h2 className="wt-title">Trusted For Our Services</h2>
             <p className="section-head-text">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry the standard dummy text ever since the when an printer
-              took.
+          
             </p>
           </div>
 
@@ -58,7 +56,7 @@ const AllServices2 = () => {
                           </h3>
                         </div>
                         <div className="service-content-bottom">
-                          <span className="service-title-large-number">01</span>
+                          <span className="service-title-large-number">02</span>
                           <p>
                           Flexible in routing and cost-effective, trucks can transport a variety of goods and provide easy door-to-door delivery domestically.
                           </p>
@@ -81,7 +79,7 @@ const AllServices2 = () => {
                           </h3>
                         </div>
                         <div className="service-content-bottom">
-                          <span className="service-title-large-number">01</span>
+                          <span className="service-title-large-number">03</span>
                           <p>
                           An optimal choice for fast, flexible, and cost-effective deliveries within cities, easily navigating narrow streets.
                           </p>
@@ -104,7 +102,7 @@ const AllServices2 = () => {
                           </h3>
                         </div>
                         <div className="service-content-bottom">
-                          <span className="service-title-large-number">01</span>
+                          <span className="service-title-large-number">04</span>
                           <p>
                           Suitable for transporting heavy and large quantities of goods over long distances at a lower cost, with less impact from weather conditions.
                           </p>
@@ -127,7 +125,7 @@ const AllServices2 = () => {
                           </h3>
                         </div>
                         <div className="service-content-bottom">
-                          <span className="service-title-large-number">01</span>
+                          <span className="service-title-large-number">05</span>
                           <p>
                           Ideal for international shipping at low costs, suitable for heavy and oversized cargo, and more environmentally friendly than air transport.
                           </p>

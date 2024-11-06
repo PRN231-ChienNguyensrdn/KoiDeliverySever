@@ -11,10 +11,6 @@ const Footer = () => {
               <div className="w-full md:w-1/2 lg:w-1/4">
                 <div className="widget widget_about">
                   <LogoComponent />
-                  <p>
-                    Many desktop publishing packages and web page editors now
-                    use are dolra Ipsum as their default .
-                  </p>
                   <ul className="social-icons flex gap-3">
                     <li className="bg-slate-500 p-2">
                       <FacebookIcon />
@@ -109,7 +105,7 @@ const Footer = () => {
             <div className="footer-bottom-info">
               <div className="footer-copy-right">
                 <span className="copyrights-text">
-                  Copyright © 2022 by thewebmax All Rights Reserved.
+                  Copyright © 2024 by KoiDeli All Rights Reserved.
                 </span>
               </div>
             </div>

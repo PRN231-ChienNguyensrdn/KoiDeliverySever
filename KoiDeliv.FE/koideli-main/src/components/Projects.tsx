@@ -7,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import img1 from "@/assets/img/project/1.jpg";
+import img1 from "@/assets/img/project/cakoi2.png";
 const Projects = () => {
   return (
     <div className="section-full section-full p-t120 p-b90 tw-project-2-wrap site-bg-gray">
@@ -61,11 +61,11 @@ const Projects = () => {
                           </div>
                           <div className="project-new-content">
                             <span className="project-new-category">
-                              Warehousing , Distrbution
+                              Delivery Koi Fish
                             </span>
                             <h4 className="wt-title">
                               <a href="services-detail.html">
-                                Warehouse inventory
+                                Fast, Safe, Affordable
                               </a>
                             </h4>
                             <a
