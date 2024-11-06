@@ -25,9 +25,6 @@ const Projects = () => {
             </div>
             <h2 className="wt-title">Featured Projects</h2>
             <p className="section-head-text">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry the standard dummy text ever since the when an printer
-              took.
             </p>
           </div>
         </div>

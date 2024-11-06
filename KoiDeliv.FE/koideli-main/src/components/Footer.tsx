@@ -56,9 +56,6 @@ const Footer = () => {
                   <h3 className="widget-title">Services</h3>
                   <ul>
                     <li>
-                      <a href="services-detail.html">Warehouse</a>
-                    </li>
-                    <li>
                       <a href="services-detail.html">Air Freight</a>
                     </li>
                     <li>
