@@ -22,6 +22,10 @@ namespace KoiDeliv.DataAccess.Repository
 			return await _context.Users.FirstOrDefaultAsync(b => b.Email == id);
 		}
 
+		public async Task<List<User>> getStaffUser()
+		{
+			return await _context.Users.Where(u => u.Role.Equals("Staff")).ToListAsync();
+		}
 		//public async Task<List<User>> getBlogById(int id)
 		//{
 		//	return await DBContext.Users.Include(b => b.Blogs).ToListAsync();

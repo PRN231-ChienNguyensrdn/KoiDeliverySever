@@ -79,6 +79,23 @@ namespace KoiDeliv.Service.Implementations
             }
         }
 
+		public async Task<IBusinessResult> GetStaffUser()
+		{
+            try
+            {
+                var user = await _unitOfWork.UserRepo.getStaffUser();
+                if (user == null)
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, user);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
         public async Task<IBusinessResult> GetById(int id)
 		{
 			try
@@ -158,7 +175,7 @@ namespace KoiDeliv.Service.Implementations
 				int result = await _unitOfWork.UserRepo.UpdateAsync(existingUser);
 				if (result > 0)
 				{
-					return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+					return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG,result);
 				}
 				return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
 			}

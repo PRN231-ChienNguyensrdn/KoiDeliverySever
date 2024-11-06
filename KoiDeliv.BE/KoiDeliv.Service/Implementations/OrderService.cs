@@ -83,7 +83,26 @@ namespace KoiDeliv.Service.Implementations
 			}
 		}
 
-		public Order GetByID(object id)
+        public async Task<IBusinessResult> GetAllOrderCustomer(string uid)
+        {
+            try
+            {
+                var orders = await _unitOfWork.OrderRepo.getOrderUser(Int32.Parse(uid));
+
+                if (orders == null || !orders.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, orders);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public Order GetByID(object id)
 		{
 			throw new NotImplementedException();
 		}

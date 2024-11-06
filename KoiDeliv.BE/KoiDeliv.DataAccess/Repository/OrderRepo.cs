@@ -1,4 +1,5 @@
 ﻿using KoiDeliv.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace KoiDeliv.DataAccess.Repository
         public OrderRepo(KoiDeliveryDBContext context ) : base( context ) 
         {
             _context = context;
+        }
+
+        public async Task<List<Order>> getOrderUser(int uid)
+        {
+            return await _context.Orders.Where(u => u.CustomerId == uid).ToListAsync();
         }
     }
 }
