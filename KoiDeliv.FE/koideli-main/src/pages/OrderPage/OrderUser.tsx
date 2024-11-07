@@ -85,7 +85,7 @@ const OrderUser: React.FC<OrderUserProps> = ({order}) => {
     </dl>
 
     <div className="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-      <ButtonDetail />
+      <ButtonDetail orderID={order.orderId} />
     </div>
   </div>
   )
