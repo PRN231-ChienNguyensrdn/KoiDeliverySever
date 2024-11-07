@@ -1,4 +1,4 @@
-import PostManagement from "./components/PostManagement";
+import OrderTable from "./components/Table";
 
 const PostManagementPage = () => {
   return (
@@ -8,7 +8,7 @@ const PostManagementPage = () => {
           Orders Management
         </h3>
       </div>
-      <PostManagement />
+      <OrderTable />
     </div>
   );
 };

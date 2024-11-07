@@ -11,19 +11,91 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@/context";
-const Login = () => {
-  const { state, dispatch } = useUser();
-  console.log("🚀 ~ Login ~ state:", state);
-  const updateUser = () => {
-    dispatch({
-      type: "UPDATE_USER",
-      payload: { name: "Nhat", email: "nhat@nt" },
-    });
+import axios from "axios";
+import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-    dispatch({
-      type: "TOGGLE_ADMIN",
-    });
+const Login = () => {
+  const navigate = useNavigate();
+
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [signupData, setSignupData] = useState({
+    fullName: "",
+    email: "",
+    passwordHash: "",
+    role: "Customer", // default role, adjust as necessary
+    phoneNumber: "",
+    address: "",
+  });
+
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginData({ ...loginData, [e.target.id]: e.target.value });
   };
+  const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignupData({ ...signupData, [e.target.id]: e.target.value });
+  };
+
+
+  const registerUser = async () => {
+    try {
+      const response = await axios.post(
+        "https://localhost:7184/api/User",
+        signupData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Add any additional headers if needed, e.g., Authorization
+            // "Authorization": `Bearer ${token}`
+          },
+        }
+      );
+      console.log("User registered successfully:", response.data);
+      // Additional logic after successful signup, e.g., redirect or update state
+    } catch (error) {
+      console.error("Error registering user:", error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  interface CustomJwtPayload {
+    UserId: string;
+    UserName: string;
+    Email: string;
+    Role: string; 
+    exp: number;
+    iss: string;
+    aud: string;
+  }
+
+const loginUser = async () => {
+    try {
+      const response = await axios.post("https://localhost:7184/api/Authorize/Login", null, {
+        params: {
+          email: loginData.email,
+          password: loginData.password,
+        },
+      });
+      console.log("User logged in successfully:", response.data.data.accessTokenToken);
+      localStorage.setItem("authToken", JSON.stringify({
+        accessToken: response.data.data.accessToken
+      }));
+      const userData = jwtDecode<CustomJwtPayload>(response.data.data.accessTokenToken);
+      if (userData.Role === "Customer") {
+        navigate("/");
+      } else if (userData.Role === "Admin") {
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
+  };
+
   return (
     <div className="bg-[#1e8fd0] py-[100px] ">
       <div className="flex flex-col items-center justify-center mx-auto  lg:py-0">
@@ -42,22 +114,26 @@ const Login = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="name" className="text-black">
+                  <Label className="text-black">
                     Email
                   </Label>
                   <Input
-                    id="name"
+                    id="email"
                     defaultValue=""
+                    value={loginData.email}
+                    onChange={handleLoginChange}
                     className="bg-white text-black"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="pass" className="text-black">
+                  <Label className="text-black">
                     Password
                   </Label>
                   <Input
-                    id="pass"
-                    defaultValue=""
+                    id="password"
+                    type="password"
+                    value={loginData.password}
+                    onChange={handleLoginChange}
                     className="bg-white text-black"
                   />
                 </div>
@@ -65,7 +141,7 @@ const Login = () => {
               <CardFooter>
                 <Button
                   className="w-full bg-black text-white hover:bg-slate-600"
-                  onClick={updateUser}
+                  onClick={loginUser}
                 >
                   Login
                 </Button>
@@ -84,40 +160,30 @@ const Login = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="name" className="text-black">
-                    Email
-                  </Label>
-                  <Input
-                    id="name"
-                    defaultValue=""
-                    className="bg-white text-black"
-                  />
+                  <Label className="text-black">Full Name</Label>
+                  <Input id="fullName" value={signupData.fullName} onChange={handleSignupChange} className="bg-white text-black" />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="pass" className="text-black">
-                    Password
-                  </Label>
-                  <Input
-                    id="pass"
-                    defaultValue=""
-                    className="bg-white text-black"
-                  />
+                  <Label className="text-black">Email</Label>
+                  <Input id="email" value={signupData.email} onChange={handleSignupChange} className="bg-white text-black" />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="confirm" className="text-black">
-                    Confirm password
-                  </Label>
-                  <Input
-                    id="confirm"
-                    defaultValue=""
-                    className="bg-white text-black"
-                  />
+                  <Label className="text-black">Password</Label>
+                  <Input id="passwordHash" type="password" value={signupData.passwordHash} onChange={handleSignupChange} className="bg-white text-black" />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-black">Address</Label>
+                  <Input id="address" value={signupData.address} onChange={handleSignupChange} className="bg-white text-black" />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-black">Phone Number</Label>
+                  <Input id="phoneNumber" value={signupData.phoneNumber} onChange={handleSignupChange} className="bg-white text-black" />
                 </div>
               </CardContent>
               <CardFooter>
                 <Button
                   className="w-full bg-black text-white hover:bg-slate-600"
-                  onClick={updateUser}
+                  onClick={registerUser}
                 >
                   Sign up
                 </Button>
