@@ -15,6 +15,7 @@ import axios from "axios";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -55,10 +56,11 @@ const Login = () => {
           },
         }
       );
-      console.log("User registered successfully:", response.data);
+      toast.success("User registered successfully!"); // Show success message
       // Additional logic after successful signup, e.g., redirect or update state
     } catch (error) {
-      console.error("Error registering user:", error);
+      toast.error("Error registering user. Please try again."); // Show error message
+
       // Handle error, e.g., show an error message to the user
     }
   };
@@ -91,8 +93,10 @@ const loginUser = async () => {
       } else if (userData.Role === "Admin") {
         navigate("/admin");
       }
+      toast.success("Login successful!"); // Show success message
+
     } catch (error) {
-      console.error("Error logging in:", error);
+      toast.error("Invalid credentials or server error."); // Show error message
     }
   };
 
