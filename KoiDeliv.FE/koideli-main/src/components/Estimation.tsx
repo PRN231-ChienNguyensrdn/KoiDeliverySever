@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import bg from "@/assets/img/bg-2.jpg";
+import bg from "@/assets/img/cakoibu.png";
 const Estimation = () => {
   return (
     <div className="section-full p-t120 site-bg-white  tw-estimation-area">
@@ -14,9 +14,6 @@ const Estimation = () => {
                 </div>
                 <h2 className="wt-title">Has a wide range of solutions</h2>
                 <p className="section-head-text text-black">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry the standard dummy text ever since the
-                  when an printer took.
                 </p>
               </div>
             </div>
@@ -42,11 +39,10 @@ const Estimation = () => {
                 <div className="tw-est-section-block-content">
                   <span className="tw-est-section-number">01</span>
                   <h3 className="tw-title">
-                    Solutions and specialized expertise
+                  Expert Solutions
                   </h3>
                   <p>
-                    Our aim is to optimize and improve your supply chain so that
-                    we can give you the best service
+                  We optimize koi fish transportation, ensuring safe and efficient delivery.
                   </p>
                   <a href="about-1.html" className="site-button-2-outline">
                     <i className="fa fa-angle-right"></i>
@@ -59,10 +55,9 @@ const Estimation = () => {
               <div className="tw-est-section-block">
                 <div className="tw-est-section-block-content">
                   <span className="tw-est-section-number">02</span>
-                  <h3 className="tw-title">Multiple warehouses</h3>
+                  <h3 className="tw-title">Flexible Pickup and Drop-off</h3>
                   <p>
-                    We provide multiple drop off and pickup locations so you
-                    don't have to worry. And you should not face any kind...
+                  With multiple locations, we make scheduling simple and convenient.
                   </p>
                   <a href="about-1.html" className="site-button-2-outline">
                     <i className="fa fa-angle-right"></i>
@@ -75,10 +70,9 @@ const Estimation = () => {
               <div className="tw-est-section-block">
                 <div className="tw-est-section-block-content">
                   <span className="tw-est-section-number">03</span>
-                  <h3 className="tw-title">Tracking made easy</h3>
+                  <h3 className="tw-title">Real-Time Tracking</h3>
                   <p>
-                    A tracking number for the entire process. so that you can
-                    find the exact position. it will help you
+                  Track your koi’s journey easily with a provided tracking number for peace of mind.
                   </p>
                   <a href="about-1.html" className="site-button-2-outline">
                     <i className="fa fa-angle-right"></i>

@@ -7,7 +7,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import img1 from "@/assets/img/project/1.jpg";
+
+// Bổ sung thêm hình ảnh
+import img1 from "@/assets/img/project/cakoi2.png";
+import img2 from "@/assets/img/project/cakoi5.png";
+import img3 from "@/assets/img/project/cakoi6.png";
+import img4 from "@/assets/img/project/cakoi7.png";  // Thêm hình ảnh mới ở đây
+
 const Projects = () => {
   return (
     <div className="section-full section-full p-t120 p-b90 tw-project-2-wrap site-bg-gray">
@@ -19,9 +25,6 @@ const Projects = () => {
             </div>
             <h2 className="wt-title">Featured Projects</h2>
             <p className="section-head-text">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry the standard dummy text ever since the when an printer
-              took.
             </p>
           </div>
         </div>
@@ -36,176 +39,135 @@ const Projects = () => {
               className="w-full"
             >
               <CarouselContent>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="md:basis-1/2 lg:basis-1/4"
-                  >
-                    <div className="p-1">
-                      <div className="item">
-                        <div className="project-new-2">
-                          <div className="wt-img-effect">
-                            <img src={img1} alt="" className="w-full" />
-                            <div className="project-view">
-                              <div
-                                className="elem pic-long project-view-btn"
-                                title="Nh-16 Highway Bridge"
-                                data-lcl-txt=""
-                                data-lcl-author=""
-                                data-lcl-thumb="images/project/1.jpg"
-                              >
-                                <Search className="absolute z-10 top-[30%] left-[30%]" />
-                                <i className="fa fa-search-plus flex items-center justify-center"></i>
-                              </div>
+                {/* Bổ sung thêm các CarouselItem với hình ảnh khác nhau */}
+                <CarouselItem className="md:basis-1/2 lg:basis-1/4">
+                  <div className="p-1">
+                    <div className="item">
+                      <div className="project-new-2">
+                        <div className="wt-img-effect">
+                          <img src={img1} alt="Koi Fish Delivery 1" className="w-full" />
+                          <div className="project-view">
+                            <div
+                              className="elem pic-long project-view-btn"
+                              title="Koi Fish Delivery 1"
+                            >
+                              <Search className="absolute z-10 top-[30%] left-[30%]" />
                             </div>
                           </div>
-                          <div className="project-new-content">
-                            <span className="project-new-category">
-                              Warehousing , Distrbution
-                            </span>
-                            <h4 className="wt-title">
-                              <a href="services-detail.html">
-                                Warehouse inventory
-                              </a>
-                            </h4>
-                            <a
-                              href="services-detail.html"
-                              className="site-button-h-align"
-                            >
-                              Read More
-                            </a>
-                          </div>
+                        </div>
+                        <div className="project-new-content">
+                          <span className="project-new-category">
+                            Delivery Koi Fish
+                          </span>
+                          <h4 className="wt-title">
+                            <a href="services-detail.html">Fast, Safe, Affordable</a>
+                          </h4>
+                          <a href="services-detail.html" className="site-button-h-align">
+                            Read More
+                          </a>
                         </div>
                       </div>
                     </div>
-                  </CarouselItem>
-                ))}
+                  </div>
+                </CarouselItem>
+                
+                <CarouselItem className="md:basis-1/2 lg:basis-1/4">
+                  <div className="p-1">
+                    <div className="item">
+                      <div className="project-new-2">
+                        <div className="wt-img-effect">
+                          <img src={img2} alt="Koi Fish Delivery 2" className="w-full" />
+                          <div className="project-view">
+                            <div
+                              className="elem pic-long project-view-btn"
+                              title="Koi Fish Delivery 2"
+                            >
+                              <Search className="absolute z-10 top-[30%] left-[30%]" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="project-new-content">
+                          <span className="project-new-category">
+                            Delivery Koi Fish
+                          </span>
+                          <h4 className="wt-title">
+                            <a href="services-detail.html">Fast, Safe, Affordable</a>
+                          </h4>
+                          <a href="services-detail.html" className="site-button-h-align">
+                            Read More
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+
+                {/* Bổ sung thêm item với các hình ảnh khác */}
+                <CarouselItem className="md:basis-1/2 lg:basis-1/4">
+                  <div className="p-1">
+                    <div className="item">
+                      <div className="project-new-2">
+                        <div className="wt-img-effect">
+                          <img src={img3} alt="Koi Fish Delivery 3" className="w-full" />
+                          <div className="project-view">
+                            <div
+                              className="elem pic-long project-view-btn"
+                              title="Koi Fish Delivery 3"
+                            >
+                              <Search className="absolute z-10 top-[30%] left-[30%]" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="project-new-content">
+                          <span className="project-new-category">
+                            Delivery Koi Fish
+                          </span>
+                          <h4 className="wt-title">
+                            <a href="services-detail.html">Fast, Safe, Affordable</a>
+                          </h4>
+                          <a href="services-detail.html" className="site-button-h-align">
+                            Read More
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+
+                <CarouselItem className="md:basis-1/2 lg:basis-1/4">
+                  <div className="p-1">
+                    <div className="item">
+                      <div className="project-new-2">
+                        <div className="wt-img-effect">
+                          <img src={img4} alt="Koi Fish Delivery 4" className="w-full" />
+                          <div className="project-view">
+                            <div
+                              className="elem pic-long project-view-btn"
+                              title="Koi Fish Delivery 4"
+                            >
+                              <Search className="absolute z-10 top-[30%] left-[30%]" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="project-new-content">
+                          <span className="project-new-category">
+                            Delivery Koi Fish
+                          </span>
+                          <h4 className="wt-title">
+                            <a href="services-detail.html">Fast, Safe, Affordable</a>
+                          </h4>
+                          <a href="services-detail.html" className="site-button-h-align">
+                            Read More
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
-            {/* <Carousel>
-              <CarouselContent className="-ml-2 md:-ml-4">
-                <CarouselItem className="pl-2 md:pl-4">
-                  {" "}
-                  <div className="item">
-                    <div className="project-new-2">
-                      <div className="wt-img-effect">
-                        <img src={img1} alt="" className="w-full" />
-                        <div className="project-view">
-                          <a
-                            className="elem pic-long project-view-btn"
-                            href="images/project/1.jpg"
-                            title="Nh-16 Highway Bridge"
-                            data-lcl-txt=""
-                            data-lcl-author=""
-                            data-lcl-thumb="images/project/1.jpg"
-                          >
-                            <i className="fa fa-search-plus"></i>
-                          </a>
-                        </div>
-                      </div>
-                      <div className="project-new-content">
-                        <span className="project-new-category">
-                          Warehousing , Distrbution
-                        </span>
-                        <h4 className="wt-title">
-                          <a href="services-detail.html">Warehouse inventory</a>
-                        </h4>
-                        <a
-                          href="services-detail.html"
-                          className="site-button-h-align"
-                        >
-                          Read More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-              </CarouselContent>
-              <CarouselContent className="-ml-2 md:-ml-4">
-                <CarouselItem className="pl-2 md:pl-4">
-                  {" "}
-                  <div className="item">
-                    <div className="project-new-2">
-                      <div className="wt-img-effect">
-                        <img src={img1} alt="" className="w-full" />
-                        <div className="project-view">
-                          <a
-                            className="elem pic-long project-view-btn"
-                            href="images/project/1.jpg"
-                            title="Nh-16 Highway Bridge"
-                            data-lcl-txt=""
-                            data-lcl-author=""
-                            data-lcl-thumb="images/project/1.jpg"
-                          >
-                            <i className="fa fa-search-plus"></i>
-                          </a>
-                        </div>
-                      </div>
-                      <div className="project-new-content">
-                        <span className="project-new-category">
-                          Warehousing , Distrbution
-                        </span>
-                        <h4 className="wt-title">
-                          <a href="services-detail.html">Warehouse inventory</a>
-                        </h4>
-                        <a
-                          href="services-detail.html"
-                          className="site-button-h-align"
-                        >
-                          Read More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-              </CarouselContent>
-              <CarouselContent className="-ml-2 md:-ml-4">
-                <CarouselItem className="pl-2 md:pl-4">
-                  {" "}
-                  <div className="item">
-                    <div className="project-new-2">
-                      <div className="wt-img-effect">
-                        <img src={img1} alt="" className="w-full" />
-                        <div className="project-view">
-                          <a
-                            className="elem pic-long project-view-btn"
-                            href="images/project/1.jpg"
-                            title="Nh-16 Highway Bridge"
-                            data-lcl-txt=""
-                            data-lcl-author=""
-                            data-lcl-thumb="images/project/1.jpg"
-                          >
-                            <i className="fa fa-search-plus"></i>
-                          </a>
-                        </div>
-                      </div>
-                      <div className="project-new-content">
-                        <span className="project-new-category">
-                          Warehousing , Distrbution
-                        </span>
-                        <h4 className="wt-title">
-                          <a href="services-detail.html">Warehouse inventory</a>
-                        </h4>
-                        <a
-                          href="services-detail.html"
-                          className="site-button-h-align"
-                        >
-                          Read More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-                <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-              </CarouselContent>
-            </Carousel> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import pic1 from "@/assets/img/pic1.png";
-import pic2 from "@/assets/img/pic2.png";
-import pic3 from "@/assets/img/pic3.png";
+import pic1 from "@/assets/img/pic3.png";
+import pic2 from "@/assets/img/pic1.png";
+import pic3 from "@/assets/img/pic2.png";
 import pic4 from "@/assets/img/pic4.png";
 import pic5 from "@/assets/img/pic5.png";
 import pic6 from "@/assets/img/pic6.png";
@@ -15,9 +15,6 @@ const AllServices = () => {
             </div>
             <h2 className="wt-title">Trusted For Our Services</h2>
             <p className="section-head-text">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry the standard dummy text ever since the when an printer
-              took.
             </p>
           </div>
 
@@ -90,44 +87,6 @@ const AllServices = () => {
                       <h3 className="service-title-large">
                         <span className="service-title-large-number">04</span>
                         <button>Rail Freight</button>
-                      </h3>
-                      <p>
-                        Our aim is to optimize and improve your supply chain so
-                        that we can give you the best service.
-                      </p>
-                      <button className="site-button-100">View Detail</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 mb-4">
-                  <div className="service-box-style3">
-                    <div className="service-media">
-                      <img src={pic5} alt="" />
-                    </div>
-                    <div className="service-content">
-                      <h3 className="service-title-large">
-                        <span className="service-title-large-number">05</span>
-                        <button>Warehousing</button>
-                      </h3>
-                      <p>
-                        Our aim is to optimize and improve your supply chain so
-                        that we can give you the best service.
-                      </p>
-                      <button className="site-button-100">View Detail</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 mb-4">
-                  <div className="service-box-style3">
-                    <div className="service-media">
-                      <img src={pic6} alt="" />
-                    </div>
-                    <div className="service-content">
-                      <h3 className="service-title-large">
-                        <span className="service-title-large-number">06</span>
-                        <button>Project Cargo</button>
                       </h3>
                       <p>
                         Our aim is to optimize and improve your supply chain so

@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import AB1 from "@/assets/img/abt-1.jpg";
+import AB1 from "@/assets/img/cakoi1.png";
 const WhyChooseUs = () => {
   return (
     <div className="section-full p-t120 p-b90 site-bg-white tw-why-choose-area2">
@@ -16,9 +16,9 @@ const WhyChooseUs = () => {
                   </div>
                   <div className="tw-why-choose-tag slide-top shine-effect">
                     <div className="tag-box">
-                      <h2>295+</h2>
-                      <h3>Branches</h3>
-                      <span>Since 1996</span>
+                      <h2>1</h2>
+                      <h3>Branch</h3>
+                      <span>Since 2024</span>
                     </div>
                   </div>
                 </div>
@@ -31,43 +31,36 @@ const WhyChooseUs = () => {
                       <div>Why Choose Us</div>
                     </div>
                     <h2 className="wt-title">
-                      We Are Professional Logistics & cargo Agency
+                      We are a dedicated and professional logistics agency specializing in koi fish 
+                      transportation. With expertise and care, we ensure the safe and efficient delivery 
+                      of each order. Our commitment to quality and safety is at the heart of everything we 
+                      do, providing clients peace of mind knowing their koi fish are in trusted hands.
+
+
                     </h2>
                   </div>
 
-                  <strong>
-                    Sed ut perspiciatis unde omnis iste natus error volup tatem
-                    accusantium dolorem que laudantium, totam inventore.
-                  </strong>
-
                   <ul className="description-list text-slate-800">
                     <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> Go beyond
-                      logistics, make the world go round and revolutionize
-                      business.
-                    </li>
-                    <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> Logistics
-                      through innovation, dedication, and technology. ready,
-                      set, done.
-                    </li>
-                    <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> We take pride
-                      in serving our customers safely. together with passion.
-                    </li>
-                    <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> Imagination
-                      what we can easily see is only a small percentage.
-                    </li>
-                    <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> Quality never
-                      goes out of style. safety, quality, professionalism.
-                    </li>
+                      <ChevronRight className="text-[#ff8a00]" /> Quality & Safety – Advanced technology 
+                      ensures the health and protection of every fish.
 
-                    <li className="flex items-center">
-                      <ChevronRight className="text-[#ff8a00]" /> The quality
-                      shows in every move we make where business lives.
                     </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-[#ff8a00]" /> Efficiency & Accuracy – Timely, reliable, 
+                      and carefully managed shipments, every time.
+
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-[#ff8a00]" /> Customer Focus – Clear communication and 
+                      responsive support for every order.
+
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-[#ff8a00]" /> Trusted & Professional – Experienced and 
+                      reputable, we provide dependable service.
+                    </li>
+                    
                   </ul>
                   <div className="tw-why-choose-left-bottom">
                     <a href="about-1.html" className="btn-half site-button">
