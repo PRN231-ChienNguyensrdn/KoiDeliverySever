@@ -16,5 +16,7 @@ namespace KoiDeliv.Service.Interface
         Task<IBusinessResult> Save(CreateRouteDTO blog);
         Task<IBusinessResult> Update(UpdateRouteDTO blog);
         Task<IBusinessResult> DeleteById(int id);
+        Task<IBusinessResult> GetRouteByShipmentId(int sid);
+        Task<IBusinessResult> GetRouteByOrderId(int oid);
     }
 }

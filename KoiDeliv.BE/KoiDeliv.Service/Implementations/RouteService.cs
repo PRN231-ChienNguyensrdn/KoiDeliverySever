@@ -9,6 +9,7 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,6 +79,52 @@ namespace KoiDeliv.Service.Implementations
                     return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
                 }
                 return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, Route);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> GetRouteByOrderId(int oid)
+        {
+            try
+            {
+                List<Shipment> listShipment = new List<Shipment>();
+                List<Route> listRoute = new List<Route>();
+                listShipment = await _unitOfWork.ShipmentRepo.GetShipmentsByOrderId(oid);
+                foreach (var item in listShipment)
+                {
+                    var Routes = await _unitOfWork.RouteRepo.getRouteByShipmentId(item.ShipmentId);
+                    listRoute.AddRange(Routes);
+                }
+                if (listRoute == null || !listRoute.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                var createRouteList = _mapper.Map<List<CreateRouteDTO>>(listRoute);
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, createRouteList);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> GetRouteByShipmentId(int sid)
+        {
+            try
+            {
+                var Routes = await _unitOfWork.RouteRepo.getRouteByShipmentId(sid);
+
+                if (Routes == null || !Routes.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, Routes);
             }
             catch (Exception ex)
             {

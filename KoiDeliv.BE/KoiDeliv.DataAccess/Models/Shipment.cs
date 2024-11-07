@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace KoiDeliv.DataAccess.Models
 {
@@ -24,6 +26,8 @@ namespace KoiDeliv.DataAccess.Models
         public virtual User? DeliveringStaff { get; set; }
         public virtual Order Order { get; set; } = null!;
         public virtual User? SalesStaff { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<Route> Routes { get; set; }
     }
 }
