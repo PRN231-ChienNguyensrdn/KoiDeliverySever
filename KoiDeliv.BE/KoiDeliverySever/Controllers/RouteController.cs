@@ -36,42 +36,6 @@ namespace KoiDeliverySever.Controllers
             }
         }
 
-        [HttpGet("byShipmentId")]
-        public async Task<IActionResult> GetAllRoutesByShipmentId(int sid)
-        {
-            try
-            {
-                var result = await _RouteService.GetRouteByShipmentId(sid);
-                if (result.Success)
-                {
-                    return Ok(result.Data);
-                }
-                return NotFound(new { message = result.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("byOrderId")]
-        public async Task<IActionResult> GetAllRoutesByOrderId(int oid)
-        {
-            try
-            {
-                var result = await _RouteService.GetRouteByOrderId(oid);
-                if (result.Success)
-                {
-                    return Ok(result.Data);
-                }
-                return NotFound(new { message = result.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-            }
-        }
-
         // GET: api/Route/{id}
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetRouteById(int id)
@@ -100,7 +64,7 @@ namespace KoiDeliverySever.Controllers
 
             try
             {
-                var result = await _RouteService.Save(createRouteDto);
+                var result = await _RouteService.CreateRoute(createRouteDto);
                 if (result.Success)
                 {
                     return Ok(new { message = "Route created successfully", data = result.Data });

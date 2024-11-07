@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KoiDeliv.DataAccess.Models;
 using KoiDeliv.Service.DTO.Create;
+using KoiDeliv.Service.DTO.Payment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace KoiDeliv.Service.Mapper
             CreateMap<CreateOrderDTO, Order>();
             CreateMap<Route, CreateRouteDTO>();
             CreateMap<CreateRouteDTO, Route>();
+            CreateMap<PaymentResponse, Transaction>();
+            CreateMap<Transaction, PaymentResponse>();
         }
     }
 }

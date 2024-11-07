@@ -18,6 +18,7 @@ namespace KoiDeliv.DataAccess.Models
 
         public virtual DbSet<Blog> Blogs { get; set; } = null!;
         public virtual DbSet<CustomerProfile> CustomerProfiles { get; set; } = null!;
+        public virtual DbSet<Gsp> Gsps { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<PriceList> PriceLists { get; set; } = null!;
         public virtual DbSet<RatingsFeedback> RatingsFeedbacks { get; set; } = null!;
@@ -31,7 +32,7 @@ namespace KoiDeliv.DataAccess.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.;Database= KoiDeliveryDB;Uid=sa;Pwd=12345;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Server=(local);Database= KoiDeliveryDB;Uid=sa;Pwd=admin12345;TrustServerCertificate=True;");
             }
         }
 
@@ -57,19 +58,19 @@ namespace KoiDeliv.DataAccess.Models
                     .WithMany(p => p.Blogs)
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Blogs__AuthorID__403A8C7D");
+                    .HasConstraintName("FK__Blogs__AuthorID__75A278F5");
 
                 entity.HasOne(d => d.PriceList)
                     .WithMany(p => p.Blogs)
                     .HasForeignKey(d => d.PriceListId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Blogs__PriceList__412EB0B6");
+                    .HasConstraintName("FK__Blogs__PriceList__76969D2E");
             });
 
             modelBuilder.Entity<CustomerProfile>(entity =>
             {
                 entity.HasKey(e => e.ProfileId)
-                    .HasName("PK__Customer__290C88845BE5E8D9");
+                    .HasName("PK__Customer__290C8884D738E605");
 
                 entity.Property(e => e.ProfileId).HasColumnName("ProfileID");
 
@@ -86,7 +87,50 @@ namespace KoiDeliv.DataAccess.Models
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.CustomerProfiles)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__CustomerP__Custo__3F466844");
+                    .HasConstraintName("FK__CustomerP__Custo__778AC167");
+            });
+
+            modelBuilder.Entity<Gsp>(entity =>
+            {
+                entity.ToTable("GSP");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Freg).HasColumnName("freg");
+
+                entity.Property(e => e.Index).HasColumnName("index");
+
+                entity.Property(e => e.Label).HasColumnName("label");
+
+                entity.Property(e => e.PEnd)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("pEnd");
+
+                entity.Property(e => e.PStart)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("pStart");
+
+                entity.Property(e => e.PTerm)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("pTerm");
+
+                entity.Property(e => e.PreRouted)
+                    .HasMaxLength(1000)
+                    .HasColumnName("preRouted");
+
+                entity.Property(e => e.Regions)
+                    .HasMaxLength(1000)
+                    .HasColumnName("regions");
+
+                entity.Property(e => e.VehicleId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("vehicleID");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -121,18 +165,20 @@ namespace KoiDeliv.DataAccess.Models
                     .HasMaxLength(50)
                     .HasDefaultValueSql("('Pending')");
 
+                entity.Property(e => e.TotalPrice).HasColumnType("decimal(13, 0)");
+
                 entity.Property(e => e.TotalWeight).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__3A81B327");
+                    .HasConstraintName("FK__Orders__Customer__787EE5A0");
             });
 
             modelBuilder.Entity<PriceList>(entity =>
             {
                 entity.HasKey(e => e.PriceId)
-                    .HasName("PK__PriceLis__4957584FDB40654C");
+                    .HasName("PK__PriceLis__4957584F8015DBAE");
 
                 entity.ToTable("PriceList");
 
@@ -152,7 +198,7 @@ namespace KoiDeliv.DataAccess.Models
             modelBuilder.Entity<RatingsFeedback>(entity =>
             {
                 entity.HasKey(e => e.FeedbackId)
-                    .HasName("PK__RatingsF__6A4BEDF6C3A8731C");
+                    .HasName("PK__RatingsF__6A4BEDF667F8AC4A");
 
                 entity.Property(e => e.FeedbackId).HasColumnName("FeedbackID");
 
@@ -167,7 +213,7 @@ namespace KoiDeliv.DataAccess.Models
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.RatingsFeedbacks)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__RatingsFe__Order__3E52440B");
+                    .HasConstraintName("FK__RatingsFe__Order__797309D9");
             });
 
             modelBuilder.Entity<Route>(entity =>
@@ -184,9 +230,19 @@ namespace KoiDeliv.DataAccess.Models
 
                 entity.Property(e => e.DateUpdate).HasColumnType("date");
 
+                entity.Property(e => e.DestinationLatitude).HasColumnName("destinationLatitude");
+
+                entity.Property(e => e.DestinationLongitude).HasColumnName("destinationLongitude");
+
                 entity.Property(e => e.Notice).HasMaxLength(250);
 
+                entity.Property(e => e.Price).HasColumnType("decimal(13, 0)");
+
                 entity.Property(e => e.ShipmentId).HasColumnName("ShipmentID");
+
+                entity.Property(e => e.SourceLatitude).HasColumnName("sourceLatitude");
+
+                entity.Property(e => e.SourceLongitude).HasColumnName("sourceLongitude");
 
                 entity.HasOne(d => d.Shipment)
                     .WithMany(p => p.Routes)
@@ -218,20 +274,22 @@ namespace KoiDeliv.DataAccess.Models
                     .HasMaxLength(50)
                     .HasDefaultValueSql("('In-Progress')");
 
+                entity.Property(e => e.TotalPrice).HasColumnType("decimal(13, 0)");
+
                 entity.HasOne(d => d.DeliveringStaff)
                     .WithMany(p => p.ShipmentDeliveringStaffs)
                     .HasForeignKey(d => d.DeliveringStaffId)
-                    .HasConstraintName("FK__Shipments__Deliv__3D5E1FD2");
+                    .HasConstraintName("FK__Shipments__Deliv__7B5B524B");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Shipments)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__Shipments__Order__3B75D760");
+                    .HasConstraintName("FK__Shipments__Order__7C4F7684");
 
                 entity.HasOne(d => d.SalesStaff)
                     .WithMany(p => p.ShipmentSalesStaffs)
                     .HasForeignKey(d => d.SalesStaffId)
-                    .HasConstraintName("FK__Shipments__Sales__3C69FB99");
+                    .HasConstraintName("FK__Shipments__Sales__7D439ABD");
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -257,7 +315,7 @@ namespace KoiDeliv.DataAccess.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534A55527D4")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534D2ED00FB")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");

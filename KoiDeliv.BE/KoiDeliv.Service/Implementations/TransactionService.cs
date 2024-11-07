@@ -49,7 +49,6 @@ namespace KoiDeliv.Service.Implementations
                         //Update Order's status is Paid
                         existedOrder.Status = "Paid";
                         _unitOfWork.OrderRepo.UpdateAsync(existedOrder);
-                        _unitOfWork.Save();
                         await transaction.CommitAsync();
                         return _mapper.Map<PaymentResponse>(payment);
                     }

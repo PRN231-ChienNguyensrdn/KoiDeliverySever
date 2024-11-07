@@ -21,6 +21,7 @@ namespace Repository
 		private BlogRepo _blogRepo;
 		private TransactionRepo _transaction;
 		private RouteRepo _routeRepo;
+		private GSPRepo _gSPRepo;
 
 		// Constructor that ensures context is injected
 		public UnitOfWork(KoiDeliveryDBContext context)
@@ -80,7 +81,7 @@ namespace Repository
 		{
 			get
 			{
-				return _priceListRepo ??= new PriceListRepo(_context);  // Lazy initialization of PriceListRepo
+				return _priceListRepo ??= new PriceListRepo(_context);  
 			}
 		}
 
@@ -88,7 +89,15 @@ namespace Repository
         {
             get
             {
-				return _routeRepo ??= new RouteRepo(_context);  // Lazy initialization of PriceListRepo
+				return _routeRepo ??= new RouteRepo(_context);  
+            }
+        }
+
+        public GSPRepo GPSRepo
+        {
+            get
+            {
+                return _gSPRepo ??= new GSPRepo(_context);  
             }
         }
 

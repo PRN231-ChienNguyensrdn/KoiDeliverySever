@@ -20,6 +20,7 @@ namespace Repository
 		BlogRepo BlogRepo { get; }
         TransactionRepo TransactionRepo { get; }
         RouteRepo RouteRepo { get; }
+        GSPRepo GPSRepo { get; }
         Task<IDbContextTransaction> BeginTransactionAsync();
         void Save();
     }

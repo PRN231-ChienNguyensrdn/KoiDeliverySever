@@ -25,6 +25,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
+builder.Services.AddScoped<IGPSService, GPSService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();  
 builder.Services.AddAutoMapper(typeof(MappingSetting));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 // builder.Services.AddCors(options =>
