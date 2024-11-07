@@ -1,10 +1,12 @@
 import bg from "@/assets/img/booking/bg-map.png";
 import pic1 from "@/assets/img/booking/pic2.png";
 import icon1 from "@/assets/img/booking/icon1.png";
-
+import React, { FormEvent, useState } from "react";
+import axios from "axios";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { DateTimePicker } from "./ui/date-picker";
+//  import { DateTimePicker } from "./ui/date-picker";
+import { DatePicker, Space,notification } from "antd";
 import {
   Select,
   SelectContent,
@@ -13,14 +15,115 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-const RequestAQuote = () => {
+interface OrderFormData {
+  orderId: number;
+  customerId: number;
+  origin: string;
+  destination: string;
+  totalWeight: number;
+  totalQuantity: number;
+  shippingMethod: string;
+  additionalServices: string;
+  status: string;
+  createdAt: string;
+  dateShip: string;
+  paymentMethod: string;
+  phoneContact: string;
+  fishType: string;
+  nameUserGet: string;
+}
+import dayjs, { Dayjs } from "dayjs";
+import { parseISO } from "date-fns";
+const RequestAQuote: React.FC = () => {
+  const onChange = (date: Dayjs | null, dateString: string | string[]) => {
+    console.log(date, dateString);
+  };
+
+  const [formData, setFormData] = useState<OrderFormData>({
+    orderId: 0,
+    customerId: 2,
+    origin: "",
+    destination: "",
+    totalWeight: 0,
+    totalQuantity: 0,
+    shippingMethod: "test",
+    additionalServices: "",
+    status: "test",
+    createdAt: new Date().toISOString(),
+    dateShip: new Date().toISOString(),
+    paymentMethod: "test",
+    phoneContact: "",
+    fishType: "",
+    nameUserGet: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeMethod = (value: string, option: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [option]: value,
+    }));
+  };
+
+  const handleDateChange = (newDate: Date) => {
+    if (newDate) {
+      setFormData((prevData) => ({
+        ...prevData,
+        dateShip: newDate.toISOString(), // Update dateShip when date changes
+      }));
+    }
+  };
+  const [api, contextHolder] = notification.useNotification();
+
+  // Update openNotification to accept a message and type dynamically
+  const openNotification = (message: string, description: string, pauseOnHover: boolean) => {
+    api.open({
+      message,
+      description,
+      showProgress: true,
+      pauseOnHover,
+    });
+  };
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      console.log("Order check:", formData);
+
+      const response = await axios.post(
+        "https://localhost:7184/api/Order",
+        formData
+      );
+      console.log("Order submitted:", response.data, formData);
+      openNotification("Order Submitted", "Your order was submitted successfully!", true);
+
+    } catch (error) {
+      openNotification("Order Error", "Your order was submitted fail!", true);
+
+      console.error("Error submitting order:", error);
+    }
+  };
+
   return (
     <div
       className="section-full p-t120 p-b90 site-bg-gray tw-booking-area"
       style={{
+        //backgroundImage: url(${bg}),
         backgroundImage: `url(${bg})`,
+
       }}
     >
+      {contextHolder}
       <div className="container">
         <div className="section-head center wt-small-separator-outer">
           <div className="wt-small-separator site-text-primary">
@@ -58,14 +161,13 @@ const RequestAQuote = () => {
                   </div>
                   <div className="w-full md:w-full lg:w-5/6 booking-tab">
                     <div className="booking-tab-content active">
-                      <form>
+                      <form onSubmit={handleSubmit}>
                         <div className="flex flex-wrap items-center">
                           <div className="w-full md:w-1/3 lg:w-1/3">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Tên người gửi
                               </Label>
-
                               <Input
                                 className="bg-white text-black"
                                 placeholder="Tên người gửi"
@@ -79,7 +181,10 @@ const RequestAQuote = () => {
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="nameUserGet"
                                 placeholder="Tên người nhận"
+                                value={formData.nameUserGet}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -102,13 +207,13 @@ const RequestAQuote = () => {
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="phoneContact"
                                 placeholder="Phone"
+                                value={formData.phoneContact}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
-                          {/* <div className="w-full md:w-1/2 lg:w-1/2">
-                            <div className="mb-3"></div>
-                          </div> */}
 
                           <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
@@ -117,7 +222,10 @@ const RequestAQuote = () => {
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="origin"
                                 placeholder="Nơi lấy cá"
+                                value={formData.origin}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -129,75 +237,97 @@ const RequestAQuote = () => {
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="destination"
                                 placeholder="Nơi nhận cá"
+                                value={formData.destination}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
 
-                          <div className="w-full md:w-1/4 lg:w-1/4">
+                          <div className="w-full md:w-1/6 lg:w-1/6">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Khối lượng
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="totalWeight"
+                                type="number"
                                 placeholder="Khối lượng đơn hàng"
+                                value={formData.totalWeight}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
-                          <div className="w-full md:w-1/4 lg:w-1/4">
+                          <div className="w-full md:w-1/6 lg:w-1/6">
+                            <div className="mb-3 px-2">
+                              <Label className="text-black" htmlFor="email">
+                                Số lượng
+                              </Label>
+                              <Input
+                                className="bg-white text-black"
+                                name="totalQuantity"
+                                type="number"
+                                placeholder="Số lượng"
+                                value={formData.totalQuantity}
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="w-full md:w-1/6 lg:w-1/6">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Loại cá
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="fishType"
                                 placeholder="Loại cá"
+                                value={formData.fishType}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
+
                           <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Ngày và giờ lấy hàng
                               </Label>
-                              <DateTimePicker />
+                              <Space direction="vertical">
+                                <DatePicker
+                                  showTime
+                                  value={dayjs(formData.dateShip)}
+                                  onChange={(date) =>
+                                    handleDateChange(
+                                      date?.toDate() || new Date()
+                                    )
+                                  }
+                                />
+                              </Space>
                             </div>
                           </div>
-                          {/* <div className="w-full md:w-1/2 lg:w-1/2">
-                            <div className="mb-3 px-2">
-                              <Label className="text-black" htmlFor="email">
-                                Ngày và giờ giao hàng
-                              </Label>
-                              <DateTimePicker />
-                            </div>
-                          </div>
-                          <div className="w-full md:w-1/2 lg:w-1/2">
-                            <div className="mb-3 px-2">
-                              <Label className="text-black" htmlFor="email">
-                                Hướng dẫn đặc biệt
-                              </Label>
-                              <Input
-                                className="bg-white text-black"
-                                placeholder="Hướng dẫn đặc biệt"
-                              />
-                            </div>
-                          </div> */}
+
                           <div className="w-full md:w-1/2 lg:w-1/2">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
                                 Phương thức thanh toán
                               </Label>
-                              <Select>
+                              <Select
+                                onValueChange={(value) => {
+                                  handleChangeMethod(value, "paymentMethod");
+                                }}
+                              >
                                 <SelectTrigger className="w-full bg-white text-black">
                                   <SelectValue placeholder="Chọn phương thức" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
-                                    <SelectItem value="apple">
+                                    <SelectItem value="Thanh toán online">
                                       Thanh toán online
                                     </SelectItem>
-                                    <SelectItem value="banana">
+                                    <SelectItem value=" Thanh toán khi nhận hàng">
                                       Thanh toán khi nhận hàng
                                     </SelectItem>
                                   </SelectGroup>
@@ -210,29 +340,34 @@ const RequestAQuote = () => {
                               <Label className="text-black" htmlFor="email">
                                 Phương thức Vận Chuyển
                               </Label>
-                              <Select>
+                              <Select
+                                onValueChange={(value) => {
+                                  handleChangeMethod(value, "shippingMethod");
+                                }}
+                              >
                                 <SelectTrigger className="w-full bg-white text-black">
                                   <SelectValue placeholder="Chọn phương thức" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
-                                    <SelectItem value="apple">
-                                      Thanh toán online
+                                    <SelectItem value="Máy bay">
+                                      Máy bay
                                     </SelectItem>
-                                    <SelectItem value="apple">
-                                      Thanh toán online
+                                    <SelectItem value="Xe lửa">
+                                      Xe lửa
                                     </SelectItem>
-                                    <SelectItem value="apple">
-                                      Thanh toán online
+                                    <SelectItem value="Xe máy">
+                                      Xe máy
                                     </SelectItem>
-                                    <SelectItem value="banana">
-                                      Thanh toán khi nhận hàng
+                                    <SelectItem value="Xe tải">
+                                      Xe tải
                                     </SelectItem>
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
                             </div>
                           </div>
+
                           <div className="w-full md:w-1/2 lg:w-full">
                             <div className="mb-3 px-2">
                               <Label className="text-black" htmlFor="email">
@@ -240,7 +375,10 @@ const RequestAQuote = () => {
                               </Label>
                               <Input
                                 className="bg-white text-black"
+                                name="additionalServices"
                                 placeholder="Ghi chú"
+                                value={formData.additionalServices}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
