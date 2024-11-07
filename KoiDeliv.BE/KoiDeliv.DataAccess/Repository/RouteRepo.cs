@@ -15,5 +15,10 @@ namespace KoiDeliv.DataAccess.Repository
         {
             _context = context;
         }
+
+        public async Task<List<Route>> getRouteByShipmentId(int id)
+        {
+            return await _context.Routes.Where(r => r.ShipmentId == id).ToListAsync();
+        }
     }
 }
