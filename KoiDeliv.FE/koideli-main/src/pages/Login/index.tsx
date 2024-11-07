@@ -84,8 +84,8 @@ const loginUser = async () => {
         },
       });
       console.log("User logged in successfully:", response.data.data.accessTokenToken);
-      localStorage.setItem("authToken", JSON.stringify({
-        accessToken: response.data.data.accessToken
+      localStorage.setItem("authToken", JSON.stringify({       
+        accessToken: response.data.data.accessTokenToken
       }));
       const userData = jwtDecode<CustomJwtPayload>(response.data.data.accessTokenToken);
       if (userData.Role === "Customer") {

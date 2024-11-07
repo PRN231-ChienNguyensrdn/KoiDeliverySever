@@ -1,11 +1,10 @@
 import bg from "@/assets/img/booking/bg-map.png";
 import pic1 from "@/assets/img/booking/pic2.png";
 import icon1 from "@/assets/img/booking/icon1.png";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-//  import { DateTimePicker } from "./ui/date-picker";
 import { DatePicker, Space,notification } from "antd";
 import {
   Select,
@@ -15,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import dayjs, { Dayjs } from "dayjs";
+import { jwtDecode } from "jwt-decode";
 interface OrderFormData {
   orderId: number;
   customerId: number;
@@ -32,23 +33,37 @@ interface OrderFormData {
   fishType: string;
   nameUserGet: string;
 }
-import dayjs, { Dayjs } from "dayjs";
-import { parseISO } from "date-fns";
-const RequestAQuote: React.FC = () => {
-  const onChange = (date: Dayjs | null, dateString: string | string[]) => {
-    console.log(date, dateString);
-  };
+interface CustomJwtPayload {
+  UserId: string;
+  UserName: string;
+  Email: string;
+  Role: string; 
+  exp: number;
+  iss: string;
+  aud: string;
+}
 
+const RequestAQuote: React.FC = () => {
+
+  const getAuthToken = (): string | null => {
+    const authData = localStorage.getItem("authToken");
+    return authData ? JSON.parse(authData).accessToken : null;
+  };
+  
+  const token = getAuthToken();
+  const userData = token ? jwtDecode<CustomJwtPayload>(token) : null;
+  
+  
   const [formData, setFormData] = useState<OrderFormData>({
     orderId: 0,
-    customerId: 2,
+    customerId:0,
     origin: "",
     destination: "",
     totalWeight: 0,
     totalQuantity: 0,
     shippingMethod: "test",
     additionalServices: "",
-    status: "test",
+    status: "Pending",
     createdAt: new Date().toISOString(),
     dateShip: new Date().toISOString(),
     paymentMethod: "test",
@@ -56,7 +71,14 @@ const RequestAQuote: React.FC = () => {
     fishType: "",
     nameUserGet: "",
   });
-
+  useEffect(() => {
+    if (userData) {
+      setFormData((prevData) => ({
+        ...prevData,
+        customerId: parseInt(userData.UserId, 10), 
+      }));
+    }
+  }, []);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -84,7 +106,6 @@ const RequestAQuote: React.FC = () => {
   };
   const [api, contextHolder] = notification.useNotification();
 
-  // Update openNotification to accept a message and type dynamically
   const openNotification = (message: string, description: string, pauseOnHover: boolean) => {
     api.open({
       message,
@@ -99,7 +120,6 @@ const RequestAQuote: React.FC = () => {
     e.preventDefault();
     try {
       console.log("Order check:", formData);
-
       const response = await axios.post(
         "https://localhost:7184/api/Order",
         formData
@@ -118,7 +138,6 @@ const RequestAQuote: React.FC = () => {
     <div
       className="section-full p-t120 p-b90 site-bg-gray tw-booking-area"
       style={{
-        //backgroundImage: url(${bg}),
         backgroundImage: `url(${bg})`,
 
       }}

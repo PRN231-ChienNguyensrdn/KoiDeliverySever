@@ -2,6 +2,8 @@ import ButtonDetail from "./ButtonDetail";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderUser from "./OrderUser";
+import { jwtDecode } from "jwt-decode";
+import { Empty } from "antd";
 interface Order {
   orderId: number;
   customerId: number;
@@ -30,17 +32,44 @@ interface ApiResponse {
   data: Order[];
   success: boolean;
 }
+interface CustomJwtPayload {
+  UserId: string;
+  UserName: string;
+  Email: string;
+  Role: string; 
+  exp: number;
+  iss: string;
+  aud: string;
+}
 const OrderPage : React.FC= () => {
   
   
   const [orders, setOrders] = useState<Order[]>([]);
 
+   const getAuthToken = (): string | null => {
+    const authData = localStorage.getItem("authToken");
+    if (authData) {
+      const parsedData = JSON.parse(authData);
+      return parsedData.accessToken;
+    }
+    return null; // Return null if there's no token stored
+  };  
+  let userData: CustomJwtPayload;
+
+  const token = getAuthToken();
+  if (token) {
+    userData = jwtDecode<CustomJwtPayload>(token);
+  } else {
+    console.error("No token found, cannot decode");
+    // Handle the case where there's no token, e.g., redirect to login or show a message
+  }
   useEffect(() => {
     // Fetch orders from API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get<ApiResponse>("https://localhost:7184/api/Order/OrdersOfCustomer?uid=1");
-        setOrders(response.data.data);
+        const response = 
+        await axios.get<ApiResponse>(`https://localhost:7184/api/Order/OrdersOfCustomer?uid=${userData.UserId}`);
+        setOrders(response.data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -438,10 +467,17 @@ const OrderPage : React.FC= () => {
                   <ButtonDetail />
                 </div>
               </div> */}
+              
               <div>
-      {orders.map((orders) => (
+                {orders.length === 0 ? (
+                <div>
+                 <Empty description='Không có dữ liệu' />
+                        
+                    </div>):(<>
+                      {orders.map((orders) => (
       <OrderUser order={orders}/>
       ))}
+     </>) }     
     </div>
             
 
