@@ -2,6 +2,7 @@ import Header from "@/components/HeaderDashBoard";
 import Sidebar from "@/components/Sidebar";
 
 import ListOrder from "./component/ListOrder";
+import ListShipment from "./component/ListShipment";
 
 const StaffPage = () => {
   return (
@@ -12,7 +13,9 @@ const StaffPage = () => {
 
       <div className="2xl:col-span-9 sm:col-span-11 xs:col-span-11">
         <Header />
-        <ListOrder />
+        {/* <ListOrder /> */}
+
+        <ListShipment/>
         {/* <div>{children}</div> */}
       </div>
     </div>

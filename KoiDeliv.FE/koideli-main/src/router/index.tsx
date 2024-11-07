@@ -12,6 +12,8 @@ import OrderPage from "@/pages/OrderPage";
 import StaffPage from "@/pages/StaffPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import PostManagementPage from "@/pages/PostManagementPage";
+import ListShipment from "@/pages/StaffPage/component/ListShipment";
+import AllShipment from "@/pages/DashBoard.tsx/AllShipment";
 
 const lazyRoutes: RouteObject[] = [
   {
@@ -54,6 +56,12 @@ const lazyRoutes: RouteObject[] = [
       {
         path: "staff",
         element: <StaffPage />,
+        children:[
+          {
+            path:"shipment"
+            ,element:<ListShipment/>
+          }
+        ]
       },
       {
         path: "",
@@ -89,6 +97,10 @@ const lazyRoutes: RouteObject[] = [
       {
         element: <NotFoundPage />,
         path: "*",
+      },
+      {
+        element: <AllShipment />,
+        path: "ship",
       },
     ],
   },

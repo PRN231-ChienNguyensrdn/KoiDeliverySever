@@ -31,6 +31,11 @@ const Sidebar: FC<SidebarProps> = ({ isAdmin = true }) => {
               icon: Table,
               path: "/staff",
             },
+            {
+              title: "Shipment",
+              icon: Table,
+              path: "/staff/shipment",
+            },
           ],
     [isAdmin]
   );
