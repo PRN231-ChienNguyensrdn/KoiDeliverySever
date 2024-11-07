@@ -76,8 +76,65 @@ namespace KoiDeliv.Service.Implementations
 				return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
 			}
 		}
- 
-		public async Task<IBusinessResult> Save(CreateShipmentDTO shipDto)
+
+        public async Task<IBusinessResult> GetShipmentsByDeliId(int deliId)
+        {
+            try
+            {
+                var shipments = await _unitOfWork.ShipmentRepo.GetShipmentsByDeliId(deliId);
+
+                if (shipments == null || !shipments.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipments);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> GetShipmentsByOrderId(int orderId)
+        {
+            try
+            {
+				var shipments = await _unitOfWork.ShipmentRepo.GetShipmentsByOrderId(orderId);
+
+                if (shipments == null || !shipments.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipments);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> GetShipmentsBySalesId(int salesId)
+        {
+            try
+            {
+				var shipments = await _unitOfWork.ShipmentRepo.GetShipmentsBySalesId(salesId);
+
+                if (shipments == null || !shipments.Any())
+                {
+                    return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                }
+
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipments);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> Save(CreateShipmentDTO shipDto)
 		{
 			try
 			{

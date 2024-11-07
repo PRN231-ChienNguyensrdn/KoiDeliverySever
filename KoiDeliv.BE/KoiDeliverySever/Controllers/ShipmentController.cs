@@ -32,8 +32,50 @@ namespace KoiDeliverySever.Controllers
 			}
 		}
 
-		// GET: api/Shipment/{id}
-		[HttpGet("{id:int}")]
+        [HttpGet("byDeliId")]
+        public async Task<IActionResult> GetAllShipmentsByDeliId(int deliId)
+        {
+            try
+            {
+				var shipments = await _shipmentService.GetShipmentsByDeliId(deliId);
+                return Ok(shipments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("byOrderId")]
+        public async Task<IActionResult> GetAllShipmentsbyOrderId(int oid)
+        {
+            try
+            {
+                var shipments = await _shipmentService.GetShipmentsByOrderId(oid);
+                return Ok(shipments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("bySalesId")]
+        public async Task<IActionResult> GetAllShipmentsbySalesId(int salesId)
+        {
+            try
+            {
+				var shipments = await _shipmentService.GetShipmentsBySalesId(salesId);
+                return Ok(shipments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // GET: api/Shipment/{id}
+        [HttpGet("{id:int}")]
 		public async Task<IActionResult> GetShipmentById(int id)
 		{
 			try

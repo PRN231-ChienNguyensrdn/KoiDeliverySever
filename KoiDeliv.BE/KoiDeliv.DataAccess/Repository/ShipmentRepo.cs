@@ -20,5 +20,15 @@ namespace KoiDeliv.DataAccess.Repository
         {
             return await _context.Shipments.Where(s => s.OrderId == orderId).ToListAsync();
         }
+
+        public async Task<List<Shipment>> GetShipmentsBySalesId(int saleId)
+        {
+            return await _context.Shipments.Where(S => S.SalesStaffId == saleId).ToListAsync();   
+        }
+
+        public async Task<List<Shipment>> GetShipmentsByDeliId(int deliId)
+        {
+            return await _context.Shipments.Where(S => S.DeliveringStaffId == deliId).ToListAsync();
+        }
     }
 }

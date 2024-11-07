@@ -18,5 +18,9 @@ namespace KoiDeliv.Service.Interface
 		Task<IBusinessResult> Save(CreateShipmentDTO ship);
 		Task<IBusinessResult> Update(UpdateShipmentDTO ship);
 		Task<IBusinessResult> DeleteById(int id);
-	}
+        Task<IBusinessResult> GetShipmentsByDeliId(int deliId);
+        Task<IBusinessResult> GetShipmentsByOrderId(int orderId);
+        Task<IBusinessResult> GetShipmentsBySalesId(int salesId);
+
+    }
 }
