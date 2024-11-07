@@ -46,6 +46,20 @@ namespace KoiDeliverySever.Controllers
             }
         }
 
+        [HttpGet("CreatePaymentLink")]
+        public async Task<IActionResult> CreatePaymentLink(string oid)
+        {
+            try
+            {
+				var orders = await _orderService.CreatePaymentLink(Int32.Parse(oid));
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
         // GET: api/Order/{id}
         [HttpGet("{id:int}")]
 		public async Task<IActionResult> GetOrderById(int id)

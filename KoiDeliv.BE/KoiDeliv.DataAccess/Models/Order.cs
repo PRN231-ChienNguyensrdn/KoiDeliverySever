@@ -27,6 +27,7 @@ namespace KoiDeliv.DataAccess.Models
         public string? PhoneContact { get; set; }
         public string? FishType { get; set; }
         public string? NameUserGet { get; set; }
+        public decimal? TotalPrice { get; set; }
 
         public virtual User Customer { get; set; } = null!;
         public virtual ICollection<RatingsFeedback> RatingsFeedbacks { get; set; }

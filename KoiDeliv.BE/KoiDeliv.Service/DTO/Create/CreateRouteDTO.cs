@@ -13,6 +13,7 @@ namespace KoiDeliv.Service.DTO.Create
         public string? Notice { get; set; }
         public DateTime DateSetting { get; set; }
         public DateTime? DateUpdate { get; set; }
+        public string? Origin { get; set; }
         public string? Adress { get; set; }
     }
 }

@@ -135,102 +135,84 @@ namespace KoiDeliv.Service.Implementations
 		}
 
 
-        /*public async Task<string> CreateOrder(List<OrderProductDto> cartItems)
+		public async Task<IBusinessResult> CreatePaymentLink(int orderId)
+		{
+			using (var transaction = await _unitOfWork.BeginTransactionAsync())
+			{
+				try
+				{
+					var Order = await _unitOfWork.OrderRepo.GetByIdAsync(orderId);
+					Order.TotalPrice = await CalculateTotalPriceByOrderID(orderId);
+
+					int result = await _unitOfWork.OrderRepo.UpdateAsync(Order);
+					var paymentUrl = CreateVnpayLink(Order);
+					await transaction.CommitAsync();
+                    if (result > 0)
+                    {
+                        return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG,paymentUrl);
+                    }
+                    else
+                    {
+                        return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                    }
+                }
+				catch (Exception ex)
+				{
+					await transaction.RollbackAsync();
+                    return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+                }
+			}
+		}
+
+        private async Task<decimal> CalculateTotalPriceByOrderID(int oid)
         {
-            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            try
             {
-                try
+                decimal price = 0;
+                var listShipment = await _unitOfWork.ShipmentRepo.GetShipmentsByOrderId(oid);
+                var listRoute = new List<Route>();
+
+                foreach (var item in listShipment)
                 {
-                    decimal totalPrice = 0;
-                    int customerId = cartItems[0].CustomerId;
-                    List<OrderDetailDtoRequest> orderProducts = new List<OrderDetailDtoRequest>();
-                    foreach (var cartItem in cartItems)
-                    {
-                        var product = await _unitOfWork.ProductRepository.GetByIDAsync(cartItem.ProductId);
-                        totalPrice += (product.Price * cartItem.Quantity);
-                        var orderProduct = new OrderDetailDtoRequest
-                        {
-                            ProductId = product.ProductId,
-                            PricePerUnit = product.Price,
-                            Quantity = cartItem.Quantity
-                        };
-                        orderProducts.Add(orderProduct);
-                    }
-
-                    // create order
-                    var order = new Order
-                    {
-                        CustomerId = customerId,
-                        TotalPrice = totalPrice,
-                        Status = 0,
-                        OrderDate = DateTime.Now,
-                        ExpiredDate = DateTime.Now.AddDays(1),
-                    };
-                    await _unitOfWork.OrderRepository.InsertAsync(order);
-                    await _unitOfWork.SaveAsync();
-
-                    // create order detail
-                    foreach (var orderProduct in orderProducts)
-                    {
-                        var orderDetail = new OrderDetail
-                        {
-                            OrderId = order.OrderId,
-                            ProductId = orderProduct.ProductId,
-                            PricePerUnit = orderProduct.PricePerUnit,
-                            Quantity = orderProduct.Quantity
-                        };
-                        await _unitOfWork.OrderDetailRepository.InsertAsync(orderDetail);
-                        await _unitOfWork.SaveAsync();
-                    }
-
-                    // minus quantity of product
-                    foreach (var orderProduct in orderProducts)
-                    {
-                        var product = await _unitOfWork.ProductRepository.GetByIDAsync(orderProduct.ProductId);
-                        if (product.Quantity < orderProduct.Quantity)
-                        {
-                            throw new Exception("Not enough product in stock");
-                        }
-                        product.Quantity = product.Quantity - orderProduct.Quantity;
-                        await _unitOfWork.ProductRepository.UpdateAsync(product);
-                        await _unitOfWork.SaveAsync();
-                    }
-
-                    // delete items in cart
-                    foreach (var cartItem in cartItems)
-                    {
-                        var item = await _unitOfWork.CartItemRepository.GetByIDAsync(cartItem.ItemId);
-                        await _unitOfWork.CartItemRepository.DeleteAsync(item);
-                        await _unitOfWork.SaveAsync();
-                    }
-                    var paymentUrl = CreateVnpayLink(order);
-                    await transaction.CommitAsync();
-                    return paymentUrl;
+                    var routes = await _unitOfWork.RouteRepo.getRouteByShipmentId(item.ShipmentId);
+                    listRoute.AddRange(routes);
                 }
-                catch (Exception ex)
+
+                if (listRoute == null || !listRoute.Any())
                 {
-                    await transaction.RollbackAsync();
-                    throw new Exception(ex.Message);
+                    return 0;
                 }
+
+                foreach (var item in listRoute)
+                {
+                    price += item.Price ?? 0;
+                }
+
+                return price;
             }
-        }*/
+            catch (Exception ex)
+            {
+                return 0; 
+            }
+        }
 
-        /*private string CreateVnpayLink(Order order)
-        {
-            var paymentUrl = string.Empty;
 
+        private string CreateVnpayLink(Order order)
+		{
+			var paymentUrl = string.Empty;
+            var createdAt = order.CreatedAt ?? DateTime.Now;
             var vpnRequest = new VNPayRequest(_configuration["VNpay:Version"], _configuration["VNpay:tmnCode"],
-                order.CreatedAt, "10.87.13.209", (decimal)order.TotalPrice, "VND", "other",
-                $"Thanh toan don hang {order.OrderId}", _configuration["VNpay:ReturnUrl"],
-                $"{order.OrderId}", order.ExpiredDate);
+				createdAt, "10.87.13.209", (decimal)order.TotalPrice, "VND", "other",
+				$"Thanh toan don hang {order.OrderId}", _configuration["VNpay:ReturnUrl"],
+				$"{order.OrderId}", createdAt.AddDays(1));
 
-            paymentUrl = vpnRequest.GetLink(_configuration["VNpay:PaymentUrl"],
-                _configuration["VNpay:HashSecret"]);
+			paymentUrl = vpnRequest.GetLink(_configuration["VNpay:PaymentUrl"],
+				_configuration["VNpay:HashSecret"]);
 
-            return paymentUrl;
-        }*/
+			return paymentUrl;
+		}
 
-        public async Task<IBusinessResult> Update(UpdateOrderDTO orderDTO)
+		public async Task<IBusinessResult> Update(UpdateOrderDTO orderDTO)
 		{
 			try
 			{
