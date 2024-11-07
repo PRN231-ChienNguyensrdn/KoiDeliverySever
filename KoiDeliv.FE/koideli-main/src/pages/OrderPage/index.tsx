@@ -68,7 +68,7 @@ const OrderPage : React.FC= () => {
     const fetchOrders = async () => {
       try {
         const response = 
-        await axios.get<ApiResponse>(`https://localhost:7184/api/Order/OrdersOfCustomer?uid=${userData.UserId}`);
+        await axios.get<ApiResponse>(`http://localhost:7184/api/Order/OrdersOfCustomer?uid=${userData.UserId}`);
         setOrders(response.data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);

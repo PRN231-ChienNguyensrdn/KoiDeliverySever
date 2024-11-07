@@ -34,7 +34,7 @@ const ButtonDetail : React.FC<ButtonDetailProps> = ({ orderID }) => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await axios.get<RouteData[]>(`https://localhost:7184/api/Route/byOrderId?oid=${orderID}`);
+        const response = await axios.get<RouteData[]>(`http://localhost:7184/api/Route/byOrderId?oid=${orderID}`);
         setRoutes(response.data);
         console.log("check a'",routes )
       } catch (err) {

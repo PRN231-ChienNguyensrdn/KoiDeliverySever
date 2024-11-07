@@ -45,14 +45,21 @@ interface CustomJwtPayload {
 
 const RequestAQuote: React.FC = () => {
 
+  let userData: CustomJwtPayload;
   const getAuthToken = (): string | null => {
     const authData = localStorage.getItem("authToken");
-    return authData ? JSON.parse(authData).accessToken : null;
+    if (authData) {
+      const parsedData = JSON.parse(authData);
+      return parsedData.accessToken;
+    }
+    return null; 
   };
-  
   const token = getAuthToken();
-  const userData = token ? jwtDecode<CustomJwtPayload>(token) : null;
-  
+  if (token) {
+    userData = jwtDecode<CustomJwtPayload>(token);
+  } else {
+    console.error("No token found, cannot decode");
+  }
   
   const [formData, setFormData] = useState<OrderFormData>({
     orderId: 0,
@@ -121,7 +128,7 @@ const RequestAQuote: React.FC = () => {
     try {
       console.log("Order check:", formData);
       const response = await axios.post(
-        "https://localhost:7184/api/Order",
+        "http://localhost:7184/api/Order",
         formData
       );
       console.log("Order submitted:", response.data, formData);
@@ -138,6 +145,7 @@ const RequestAQuote: React.FC = () => {
     <div
       className="section-full p-t120 p-b90 site-bg-gray tw-booking-area"
       style={{
+        //backgroundImage: url(${bg}),
         backgroundImage: `url(${bg})`,
 
       }}

@@ -46,7 +46,7 @@ const Login = () => {
   const registerUser = async () => {
     try {
       const response = await axios.post(
-        "https://localhost:7184/api/User",
+        "http://localhost:7184/api/User",
         signupData,
         {
           headers: {
@@ -77,14 +77,14 @@ const Login = () => {
 
 const loginUser = async () => {
     try {
-      const response = await axios.post("https://localhost:7184/api/Authorize/Login", null, {
+      const response = await axios.post("http://localhost:7184/api/Authorize/Login", null, {
         params: {
           email: loginData.email,
           password: loginData.password,
         },
       });
       console.log("User logged in successfully:", response.data.data.accessTokenToken);
-      localStorage.setItem("authToken", JSON.stringify({       
+      localStorage.setItem("authToken", JSON.stringify({
         accessToken: response.data.data.accessTokenToken
       }));
       const userData = jwtDecode<CustomJwtPayload>(response.data.data.accessTokenToken);
@@ -92,6 +92,8 @@ const loginUser = async () => {
         navigate("/");
       } else if (userData.Role === "Admin") {
         navigate("/admin");
+      }else if (userData.Role === "Staff") {
+        navigate("/staff");
       }
       toast.success("Login successful!"); // Show success message
 

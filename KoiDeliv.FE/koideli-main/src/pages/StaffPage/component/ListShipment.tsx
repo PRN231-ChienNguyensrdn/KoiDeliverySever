@@ -36,8 +36,8 @@ const ListShipment : React.FC= () => {
     // Fetch orders from API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get<ApiResponse>("https://localhost:7184/api/Shipment/byDeliId?deliId=1");
-        setShip(response.data.data);
+        const response = await axios.get<ApiResponse>("http://localhost:7184/api/Shipment/byDeliId?deliId=4");
+        setShip(response.data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }

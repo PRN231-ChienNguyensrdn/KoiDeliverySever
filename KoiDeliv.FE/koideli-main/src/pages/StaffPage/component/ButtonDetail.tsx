@@ -34,7 +34,7 @@ const ButtonDetail : React.FC<ButtonDetailProps> = ({ shipmentId }) => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await axios.get<RouteData[]>(`https://localhost:7184/api/Route/byShipmentId?sid=${shipmentId}`);
+        const response = await axios.get<RouteData[]>(`http://localhost:7184/api/Route/byShipmentId?sid=${shipmentId}`);
         setRoutes(response.data);
       } catch (err) {
         setError('Error fetching data');
