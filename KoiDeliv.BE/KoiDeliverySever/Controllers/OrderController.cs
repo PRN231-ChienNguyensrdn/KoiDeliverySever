@@ -123,8 +123,30 @@ namespace KoiDeliverySever.Controllers
 			}
 		}
 
-		// DELETE: api/Order/{id}
-		[HttpDelete("{id:int}")]
+        // PUT: api/Order/{id}
+        [HttpPut("UpdateOrderStatus")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, string status)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+				var result = await _orderService.UpdateOrderStatus(id,status);
+
+                if (result.Success)
+                    return Ok(new { message = "Order updated successfully", data = result.Data });
+
+                return BadRequest(new { message = result.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // DELETE: api/Order/{id}
+        [HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteOrder(int id)
 		{
 			try

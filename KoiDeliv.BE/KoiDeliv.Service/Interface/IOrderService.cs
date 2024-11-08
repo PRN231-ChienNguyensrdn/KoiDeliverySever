@@ -20,5 +20,6 @@ namespace KoiDeliv.Service.Interface
 		Task<IBusinessResult> DeleteById(int id);
 		Task<IBusinessResult> GetAllOrderCustomer(string uid);
 		Task<IBusinessResult> CreatePaymentLink(int orderId);
+        Task<IBusinessResult> UpdateOrderStatus(int orderId, string status);
     }
 }

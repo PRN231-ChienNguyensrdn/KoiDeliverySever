@@ -95,9 +95,6 @@ namespace KoiDeliverySever.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRoute([FromBody] CreateRouteDTO createRouteDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
                 var result = await _RouteService.CreateRoute(createRouteDto);
@@ -125,6 +122,29 @@ namespace KoiDeliverySever.Controllers
                 updateRouteDto.RoutedId = id; // Assign the ID from the route
 
                 var result = await _RouteService.Update(updateRouteDto);
+
+                if (result.Success)
+                    return Ok(new { message = "Route updated successfully", data = result.Data });
+
+                return BadRequest(new { message = result.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (consider using a logging framework)
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // PUT: api/Route/{id}
+        [HttpPut("UpdateRouteStatus")]
+        public async Task<IActionResult> UpdateRouteStatus(int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var result = await _RouteService.UpdateRouteStatus(id);
 
                 if (result.Success)
                     return Ok(new { message = "Route updated successfully", data = result.Data });
