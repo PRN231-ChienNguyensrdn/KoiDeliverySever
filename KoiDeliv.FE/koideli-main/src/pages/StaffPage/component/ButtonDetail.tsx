@@ -63,7 +63,20 @@ const ButtonDetail : React.FC<ButtonDetailProps> = ({ shipmentId }) => {
     fetchRoutes();
   }, [shipmentId]);
 
-
+  const updateRouteStatus = async () => {
+    if (filteredRoute?.routedId) {
+      try {
+        const response =  await axios.put(`http://localhost:7184/api/Route/UpdateRouteStatus?id=${filteredRoute.routedId}`);
+        // Optionally refetch routes or update the state locally if successful
+        alert('Route status updated successfully!');
+      } catch (err) {
+        console.error('Failed to update route status:', err);
+        alert('Error updating route status');
+      }
+    } else {
+      alert('No route selected for update');
+    }
+  };
 
   return (
     <Dialog>
@@ -128,9 +141,9 @@ const ButtonDetail : React.FC<ButtonDetailProps> = ({ shipmentId }) => {
            
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                Order Id
+                Status: 
               </Label>
-              <Input id="name" defaultValue={filteredRoute?.notice} className="col-span-3" />
+              <Input id="name" defaultValue={filteredRoute?.routedId || "Giao Hàng Thành Công"} className="col-span-3" />
             </div>
             {/* <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="username" className="text-right">
@@ -162,7 +175,12 @@ const ButtonDetail : React.FC<ButtonDetailProps> = ({ shipmentId }) => {
           </div>
         </div>
         <DialogFooter>
-          <Button >Save changes</Button>
+        {filteredRoute ? (
+                   <Button onClick={updateRouteStatus}>Save changes</Button>
+
+        ) : (
+          <span>Hoàn Thành Giao Hàng</span>
+        )}
         </DialogFooter>
         </form>
        
