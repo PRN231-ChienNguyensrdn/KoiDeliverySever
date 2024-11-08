@@ -256,5 +256,29 @@ namespace KoiDeliv.Service.Implementations
                 return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
             }
         }
+
+        public async Task<IBusinessResult> UpdateRouteStatus(int id)
+        {
+            try
+            {
+                var existingRoute = await _unitOfWork.RouteRepo.GetByIdAsync(id);
+                if (existingRoute == null)
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, "Route not found");
+                }
+                existingRoute.Status = true;
+
+                int result = await _unitOfWork.RouteRepo.UpdateAsync(existingRoute);
+                if (result > 0)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, result);
+                }
+                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+            }
+        }
     }
 }
