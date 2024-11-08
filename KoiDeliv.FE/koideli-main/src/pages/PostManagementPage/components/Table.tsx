@@ -30,7 +30,7 @@ const OrderTable: React.FC = () => {
 
   useEffect(() => {
     // Fetch data from the local API endpoint
-    axios.get('https://localhost:7184/api/Order/Orders', {
+    axios.get('http://localhost:7184/api/Order/Orders', {
       headers: {
         'Content-Type': 'application/json',
       },

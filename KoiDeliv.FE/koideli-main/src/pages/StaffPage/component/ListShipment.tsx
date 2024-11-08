@@ -2,6 +2,7 @@ import ButtonDetail from "./ButtonDetail";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderUser from "@/pages/OrderPage/OrderUser";
+import { jwtDecode } from "jwt-decode";
 
 interface ListShip {
   shipmentId: number;
@@ -27,16 +28,41 @@ interface ApiResponse {
   data: ListShip[];
   success: boolean;
 }
+interface CustomJwtPayload {
+  UserId: string;
+  UserName: string;
+  Email: string;
+  Role: string; 
+  exp: number;
+  iss: string;
+  aud: string;
+}
 const ListShipment : React.FC= () => {
   
   
   const [Ship, setShip] = useState<ListShip[]>([]);
+  const getAuthToken = (): string | null => {
+    const authData = localStorage.getItem("authToken");
+    if (authData) {
+      const parsedData = JSON.parse(authData);
+      return parsedData.accessToken;
+    }
+    return null; // Return null if there's no token stored
+  };  
+  let userData: CustomJwtPayload;
 
+  const token = getAuthToken();
+  if (token) {
+    userData = jwtDecode<CustomJwtPayload>(token);
+  } else {
+    console.error("No token found, cannot decode");
+    // Handle the case where there's no token, e.g., redirect to login or show a message
+  }
   useEffect(() => {
     // Fetch orders from API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get<ApiResponse>("http://localhost:7184/api/Shipment/byDeliId?deliId=4");
+        const response = await axios.get<ApiResponse>(`http://localhost:7184/api/Shipment/byDeliId?deliId=${userData.UserId}`);
         setShip(response.data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);

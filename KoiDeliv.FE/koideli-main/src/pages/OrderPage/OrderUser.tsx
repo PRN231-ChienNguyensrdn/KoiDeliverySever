@@ -1,5 +1,6 @@
 import React from 'react'
 import ButtonDetail from './ButtonDetail'
+import { Button } from 'antd';
 type Order = {
     orderId: number;
   customerId: number;
@@ -87,6 +88,10 @@ const OrderUser: React.FC<OrderUserProps> = ({order}) => {
     <div className="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
       <ButtonDetail orderID={order.orderId} />
     </div>
+
+    {order.status === "Accept" && (
+    <Button type="primary">Thanh toan</Button>
+    )}
   </div>
   )
 }
