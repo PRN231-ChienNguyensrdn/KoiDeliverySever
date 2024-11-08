@@ -11,10 +11,11 @@ namespace KoiDeliv.Service.Implementations
 	public class ShipmentService : IShipmentService
 	{
 		private readonly IUnitOfWork _unitOfWork;
-
-		public ShipmentService(IUnitOfWork unitOfWork)
+		private readonly IRouteService _routeService;
+		public ShipmentService(IUnitOfWork unitOfWork, IRouteService routeService)
 		{
-			_unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+			_unitOfWork = unitOfWork;
+			_routeService = routeService;
 		}
 
 		public async Task<IBusinessResult> DeleteById(int id)
@@ -145,24 +146,23 @@ namespace KoiDeliv.Service.Implementations
 					// Return an error if the OrderID doesn't exist
 					return new BusinessResult(Const.FAIL_CREATE_CODE, "Order not found for the provided OrderID");
 				}
+                var shipment = new Shipment
+                {
+                    OrderId = shipDto.OrderID, // Make sure OrderId is set correctly
+                    SalesStaffId = shipDto.SalesStaffId,
+                    DeliveringStaffId = shipDto.DeliveringStaffId,
+                    HealthCheckStatus = null,
+                    PackingStatus = null,
+                    ShippingStatus = null,
+                    ForeignImportStatus = null,
+                    CertificateIssued = shipDto.CertificateIssued,
+                    DeliveryDate = order.DateShip,
+                };
+                int result = await _unitOfWork.ShipmentRepo.CreateAsync(shipment);
 
-				// If the order exists, proceed with creating the shipment
-				var shipment = new Shipment
-				{
-					OrderId = shipDto.OrderID, // Make sure OrderId is set correctly
-					SalesStaffId = shipDto.SalesStaffId,
-					DeliveringStaffId = shipDto.DeliveringStaffId,
-					HealthCheckStatus = shipDto.HealthCheckStatus,
-					PackingStatus = shipDto.PackingStatus,
-					ShippingStatus = shipDto.ShippingStatus,
-					ForeignImportStatus = shipDto.ForeignImportStatus,
-					CertificateIssued = shipDto.CertificateIssued,
-					DeliveryDate = shipDto.DeliveryDate
-				};
-
-				// Create the shipment
-				int result = await _unitOfWork.ShipmentRepo.CreateAsync(shipment);
-				if (result > 0)
+				var resultAddRoute = await HandleShipment(shipment.ShipmentId);
+					
+				if (result > 0 && resultAddRoute.Success)
 				{
 					return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
 				}
@@ -176,8 +176,101 @@ namespace KoiDeliv.Service.Implementations
 			}
 		}
 
+        public async Task<IBusinessResult> HandleShipment(int shipmentId)
+        {
+			try
+			{
+				Shipment handleShipment = _unitOfWork.ShipmentRepo.GetById(shipmentId);
+				var order = await _unitOfWork.OrderRepo.GetByIdAsync(handleShipment.OrderId);
+				if (order == null)
+				{
+					return new BusinessResult(Const.FAIL_CREATE_CODE, "Order not found for the provided OrderID");
+				}
+				if (order.ShippingMethod == "Road")
+				{
+					CreateRouteDTO route1 = new CreateRouteDTO()
+					{
+						ShipmentId = handleShipment.ShipmentId,
+						Status = false,
+						Notice = "Lấy hàng",
+						DateSetting = DateTime.Now,
+						DateUpdate = null,
+						Origin = "phường 25 quận bình thạnh",
+						Adress = order.Origin,
+					};
+					await _routeService.CreateRoute(route1);
+					CreateRouteDTO route2 = new CreateRouteDTO()
+					{
+						ShipmentId = handleShipment.ShipmentId,
+						Status = false,
+						Notice = "Giao hang",
+						DateSetting = DateTime.Now,
+						DateUpdate = null,
+						Origin = order.Origin,
+						Adress = order.Destination,
+					};
+					await _routeService.CreateRoute(route2);
+				}
+				else
+				{
+                    CreateRouteDTO route1 = new CreateRouteDTO()
+                    {
+                        ShipmentId = handleShipment.ShipmentId,
+                        Status = false,
+                        Notice = "Lấy hàng",
+                        DateSetting = DateTime.Now,
+                        DateUpdate = null,
+                        Origin = "phường 25 quận bình thạnh",
+                        Adress = order.Origin,
+                    };
+                    await _routeService.CreateRoute(route1);
 
-		public async Task<IBusinessResult> Update(UpdateShipmentDTO shipDto)
+                    CreateRouteDTO route2 = new CreateRouteDTO()
+                    {
+                        ShipmentId = handleShipment.ShipmentId,
+                        Status = false,
+                        Notice = "Điểm trung chuyển 1",
+                        DateSetting = DateTime.Now,
+                        DateUpdate = null,
+                        Origin = order.Origin,
+                        Adress = "phường 2 quận tân bình",
+                    };
+                    await _routeService.CreateRoute(route2);
+
+                    CreateRouteDTO route3 = new CreateRouteDTO()
+                    {
+                        ShipmentId = handleShipment.ShipmentId,
+                        Status = false,
+                        Notice = "Điểm trung chuyển 2",
+                        DateSetting = DateTime.Now,
+                        DateUpdate = null,
+                        Origin = "phường 2 quận tân bình",
+                        Adress = "phường hiệp bình chánh quận thủ đức",
+                    };
+                    await _routeService.CreateRoute(route3);
+
+                    CreateRouteDTO route4 = new CreateRouteDTO()
+                    {
+                        ShipmentId = handleShipment.ShipmentId,
+                        Status = false,
+                        Notice = "Hoàn tất giao hàng",
+                        DateSetting = DateTime.Now,
+                        DateUpdate = null,
+                        Origin = "phường hiệp bình chánh quận thủ đức",
+                        Adress = order.Destination,
+                    };
+                    await _routeService.CreateRoute(route4);
+                }
+                return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+            }
+            catch (Exception ex)
+            {
+                // Catch and return any exceptions
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+            }
+        }
+
+        public async Task<IBusinessResult> Update(UpdateShipmentDTO shipDto)
 		{
 			try
 			{
