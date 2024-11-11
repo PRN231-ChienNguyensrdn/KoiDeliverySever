@@ -16,7 +16,7 @@ namespace KoiDeliv.Service.DTO.Create
 		public string ShippingStatus { get; set; }
 		public string ForeignImportStatus { get; set; }
 		public string CertificateIssued { get; set; }
-		public DateTime DeliveryDate { get; set; }
+		/*public DateTime DeliveryDate { get; set; }*/
 	}
 
 }

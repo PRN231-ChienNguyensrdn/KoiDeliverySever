@@ -11,14 +11,18 @@ namespace KoiDeliverySever.Controllers
 	public class ShipmentController : ControllerBase
 	{
 		private readonly IShipmentService _shipmentService;
+		private readonly IOrderService _orderService;
 
-		public ShipmentController(IShipmentService shipmentService)
-		{
-			_shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
-		}
+        public ShipmentController(IShipmentService shipmentService, IOrderService orderService)
+        {
+            _shipmentService = shipmentService;
+            _orderService = orderService;
+        }
 
-		// GET: api/Shipment
-		[HttpGet("Shipments")]
+
+
+        // GET: api/Shipment
+        [HttpGet("Shipments")]
 		public async Task<IActionResult> GetAllShipments()
 		{
 			try
@@ -137,8 +141,9 @@ namespace KoiDeliverySever.Controllers
 
 				var result = await _shipmentService.Update(updateShipmentDto);
 
+
 				if (result.Success)
-				{
+				{					
 					return Ok(new { message = "Shipment updated successfully", data = result.Data });
 				}
 

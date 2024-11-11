@@ -1,6 +1,7 @@
 import React from 'react'
 import ButtonDetail from './ButtonDetail'
 import { Button } from 'antd';
+import axios from 'axios';
 type Order = {
     orderId: number;
   customerId: number;
@@ -26,7 +27,25 @@ type Order = {
   interface OrderUserProps {
     order: Order;
   }
+  interface ApiResponse {
+    status: number;
+    message: string;
+    data: string;
+    success: boolean;
+  }
 const OrderUser: React.FC<OrderUserProps> = ({order}) => {
+
+  const  handleReturn = async() => {
+    try {
+      const response = 
+      await axios.get<ApiResponse>(`http://localhost:7184/api/Order/CreatePaymentLink?oid=${order.orderId}`);
+
+      console.log("check",response.data)
+      window.location.href = response.data.data;
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  }
   return (
     <div key={order.orderId} className="flex flex-wrap items-center gap-y-4 py-6">
     <dl className="w-1/2 sm:w-1/6 lg:w-auto lg:flex-1">
@@ -90,7 +109,7 @@ const OrderUser: React.FC<OrderUserProps> = ({order}) => {
     </div>
 
     {order.status === "Accept" && (
-    <Button type="primary">Thanh toan</Button>
+    <Button type="primary" onClick={handleReturn}>Thanh toan</Button>
     )}
   </div>
   )

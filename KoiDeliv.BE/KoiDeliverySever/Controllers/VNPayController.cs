@@ -21,7 +21,7 @@ namespace KoiDeliverySever.Controllers
         {
             try
             {
-                string appScheme = "http://localhost:5001";
+                string appScheme = "http://localhost:5173";
 
                 if (parameters.vnp_BankTranNo == null)
                 {

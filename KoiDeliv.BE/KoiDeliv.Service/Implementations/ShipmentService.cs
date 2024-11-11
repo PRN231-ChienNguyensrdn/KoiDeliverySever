@@ -161,7 +161,6 @@ namespace KoiDeliv.Service.Implementations
                 int result = await _unitOfWork.ShipmentRepo.CreateAsync(shipment);
 
 				var resultAddRoute = await HandleShipment(shipment.ShipmentId);
-					
 				if (result > 0 && resultAddRoute.Success)
 				{
 					return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -289,8 +288,8 @@ namespace KoiDeliv.Service.Implementations
 				existingShipment.ForeignImportStatus = shipDto.ForeignImportStatus ?? existingShipment.ForeignImportStatus;
 
 				int result = await _unitOfWork.ShipmentRepo.UpdateAsync(existingShipment);
-
-				if (result > 0)
+               
+                if (result > 0)
 				{
 					return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
 				}
@@ -302,7 +301,34 @@ namespace KoiDeliv.Service.Implementations
 				return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
 			}
 		}
+        public async Task<IBusinessResult> UpdateOrderStatus(int orderId, string status)
+        {
+            try
+            {
+                var existOrder = await _unitOfWork.OrderRepo.GetByIdAsync(orderId);
+                if (existOrder == null)
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, "Order not found");
+                }
+
+                existOrder.Status = status;
+
+                int result = await _unitOfWork.OrderRepo.UpdateAsync(existOrder);
+                if (result > 0)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+            }
+        }
 
 
-	}
+    }
 }

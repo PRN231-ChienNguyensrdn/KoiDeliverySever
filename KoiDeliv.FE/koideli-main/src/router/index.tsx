@@ -15,39 +15,36 @@ import PostManagementPage from "@/pages/PostManagementPage";
 import ListShipment from "@/pages/StaffPage/component/ListShipment";
 import AllShipment from "@/pages/DashBoard.tsx/AllShipment";
 
+import PrivateRoute from "@/pages/Authen/PrivateRoute"
+import Unauthor from "@/pages/Authen/Unauthor";
+import Payment from "@/pages/Payment";
+
 const lazyRoutes: RouteObject[] = [
   {
     path: "/",
     children: [
       {
         path: "admin",
+        element: (
+          <PrivateRoute allowedRoles={['Admin']} element={<AdminLayout><Outlet /></AdminLayout>} />
+        ),
         children: [
           {
-            path: "",
+            path: paths.dashboard,
+            element: <Dashboard />,
+          },
+          {
+            path: paths.ordersManagement,
             element: (
-              <AdminLayout>
+              <>
+                <PostManagementPage />
                 <Outlet />
-              </AdminLayout>
+              </>
             ),
             children: [
               {
-                path: paths.dashboard,
-                element: <Dashboard />,
-              },
-              {
-                path: paths.ordersManagement,
-                element: (
-                  <>
-                    <PostManagementPage />
-                    <Outlet />
-                  </>
-                ),
-                children: [
-                  {
-                    path: ":id",
-                    element: <PostItemPage />,
-                  },
-                ],
+                path: ":id",
+                element: <PostItemPage />,
               },
             ],
           },
@@ -55,53 +52,55 @@ const lazyRoutes: RouteObject[] = [
       },
       {
         path: "staff",
-        element: <StaffPage />,
-        children:[
-          {
-            path:"shipment"
-            ,element:<ListShipment/>
-          }
-        ]
-      },
-      {
-        path: "",
+        element: (
+          <PrivateRoute allowedRoles={['Staff', 'Admin']} element={<StaffPage />} />
+        ),
         children: [
           {
-            path: "",
-            element: (
-              <MainLayout>
-                <Outlet />
-              </MainLayout>
-            ),
-            children: [
-              {
-                path: "",
-                element: <HomePage />,
-              },
-              {
-                path: "service",
-                element: <ServicePage />,
-              },
-              {
-                path: "login",
-                element: <Login />,
-              },
-              {
-                path: "order",
-                element: <OrderPage />,
-              },
-            ],
+            path: "shipment",
+            element: <ListShipment />,
+          },
+          {
+            path: "ship",
+            element: <AllShipment />,
           },
         ],
       },
       {
-        element: <NotFoundPage />,
-        path: "*",
+        path: "",
+        element: (
+          <MainLayout>
+            <Outlet />
+          </MainLayout>
+        ),
+        children: [
+          {
+            path: "",
+            element: <HomePage />,
+          },
+          {
+            path: "service",
+            element: <ServicePage />,
+          },
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "order",
+            element: <OrderPage />,
+          },
+        ],
       },
       {
-        element: <AllShipment />,
-        path: "ship",
+        path: "/payment-success",
+        element: <Payment />,
       },
+      {
+        path: "*",
+        element: <Unauthor />,
+      },
+      
     ],
   },
 ];
@@ -112,3 +111,4 @@ const Router = () => {
 };
 
 export default Router;
+
